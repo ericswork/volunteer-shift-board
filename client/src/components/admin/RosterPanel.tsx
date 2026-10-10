@@ -18,6 +18,11 @@ export function RosterPanel({ eventId }: { eventId: string }) {
   const [chosenShiftId, setChosenShiftId] = useState<string>();
   const shiftPicker = useRef<HTMLSelectElement>(null);
 
+  // Remember the first shift as soon as the shifts arrive. Otherwise adding a shift that starts
+  // earlier would make it the new first shift, and the roster would jump to it.
+  const firstShiftId = event.data?.shifts[0]?.id;
+  if (chosenShiftId === undefined && firstShiftId !== undefined) setChosenShiftId(firstShiftId);
+
   if (event.isError) {
     return (
       <ErrorState message="We couldn't load this event's shifts." onRetry={() => event.refetch()} />
