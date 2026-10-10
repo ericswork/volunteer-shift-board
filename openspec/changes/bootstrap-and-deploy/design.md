@@ -129,7 +129,7 @@ Design choices in the schema:
   - Defined as code in `render.yaml` (a Render Blueprint). Build command: `npm ci --include=dev && npx prisma migrate deploy && npm run build`; `npm run build` runs `prisma generate` itself.
   - Start command: `npm start` (`node dist/server.js`).
   - Health check path: `/api/health`. Node 24 LTS, set explicitly by `NODE_VERSION` in `render.yaml`, because Render's docs don't say whether `.nvmrc` is read when a service has its own root directory.
-  - Migrations run during the build because Render's pre-deploy command isn't offered on free instances. Confirm this during setup.
+  - Migrations run during the build because Render's pre-deploy command isn't offered on free instances (confirmed in the dashboard on 2026-10-10: it requires a paid plan).
 - **Vercel:** root directory `client`, Vite preset. `vercel.json` rewrites every path to `/index.html` so client-side routes survive a reload.
 - **Cross-origin calls:** the browser calls Render directly (`VITE_API_URL`), and the server allowlists `CLIENT_ORIGIN`. Auth will use a Bearer header, not cookies, so CORS doesn't need credentials.
 

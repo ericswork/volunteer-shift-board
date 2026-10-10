@@ -5,7 +5,7 @@ services:
     plan: free
     region: singapore
     rootDir: server
-    # Migrations run in the build: Render's pre-deploy command isn't guaranteed on free instances
+    # Migrations run in the build: Render's pre-deploy command needs a paid plan
     buildCommand: npm ci --include=dev && npx prisma migrate deploy && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
