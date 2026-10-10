@@ -6,13 +6,17 @@ const PILLS: Record<AvailabilityStatus, { label: string; className: string }> = 
   full: { label: 'Full', className: 'bg-status-full-bg text-status-full-text' },
 };
 
-export function StatusPill({ status }: { status: AvailabilityStatus }) {
+// spotsText comes from spotsLabel, which already starts with "Full" when nothing is left
+export function StatusPill({ status, spotsText }: { status: AvailabilityStatus; spotsText?: string }) {
   const pill = PILLS[status];
+  let text = pill.label;
+  if (spotsText) text = status === 'full' ? spotsText : `${pill.label} · ${spotsText}`;
+
   return (
     <span
       className={`inline-flex rounded-full px-2.5 py-0.5 text-[13px] leading-5 font-semibold ${pill.className}`}
     >
-      {pill.label}
+      {text}
     </span>
   );
 }

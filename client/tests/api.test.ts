@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ApiError, apiFetch } from '../src/lib/api';
+import { ApiError, apiFetch, shouldRetry } from '../src/lib/api';
 
 function respondWith(body: string, status = 200, contentType = 'application/json') {
   vi.stubGlobal(
@@ -40,5 +40,20 @@ describe('apiFetch', () => {
 
     await expect(apiFetch('/api/health')).rejects.toBeInstanceOf(ApiError);
     await expect(apiFetch('/api/health')).rejects.toMatchObject({ code: 'NETWORK_ERROR' });
+  });
+});
+
+describe('shouldRetry', () => {
+  it('gives up at once on a client error such as an unknown event', () => {
+    expect(shouldRetry(0, new ApiError(404, 'NOT_FOUND', 'Not found'))).toBe(false);
+  });
+
+  it('retries server and network errors up to three times', () => {
+    const serverError = new ApiError(500, 'INTERNAL_ERROR', 'Oops');
+    const networkError = new ApiError(0, 'NETWORK_ERROR', 'Offline');
+
+    expect(shouldRetry(2, serverError)).toBe(true);
+    expect(shouldRetry(3, serverError)).toBe(false);
+    expect(shouldRetry(0, networkError)).toBe(true);
   });
 });

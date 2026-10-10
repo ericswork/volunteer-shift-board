@@ -14,6 +14,14 @@ export class ApiError extends Error {
   }
 }
 
+const MAX_RETRIES = 3;
+
+// A 4xx means the request itself is wrong (such as an unknown event), so repeating it can't help
+export function shouldRetry(failureCount: number, error: unknown): boolean {
+  if (error instanceof ApiError && error.status >= 400 && error.status < 500) return false;
+  return failureCount < MAX_RETRIES;
+}
+
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   headers.set('Accept', 'application/json');

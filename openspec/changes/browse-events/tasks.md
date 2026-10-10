@@ -28,9 +28,9 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 5. Event detail page
 
-- [ ] 5.1 Build the header area (back link, chips, title, date and location, description) and the two-column layout that stacks below the breakpoint; verify against PDF page 2 at 1280px and 390px
-- [ ] 5.2 Build `ShiftRow` with spots, bar and the disabled "Shift full" state, leaving an empty action slot for open shifts; verify Load delivery vans shows "Full · 4 of 4 taken" with a disabled button
-- [ ] 5.3 Add the "Good to know" and "Questions?" panels (mailto `organizer@example.org`) and the not-found state; verify `/events/<random uuid>` shows "We couldn't find that event."
+- [x] 5.1 Build the header area (back link, chips, title, date and location, description) and the two-column layout that stacks below the breakpoint; verify against PDF page 2 at 1280px and 390px
+- [x] 5.2 Build `ShiftRow` with spots, bar and the disabled "Shift full" state, leaving an empty action slot for open shifts; verify Load delivery vans shows "Full · 4 of 4 taken" with a disabled button
+- [x] 5.3 Add the "Good to know" and "Questions?" panels (mailto `organizer@example.org`) and the not-found state; verify `/events/<random uuid>` shows "We couldn't find that event."
 
 ## 6. Deploy and verify
 

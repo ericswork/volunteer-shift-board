@@ -23,6 +23,21 @@ export type EventSummary = Availability & {
   location: string;
 };
 
+export type Shift = Availability & {
+  id: string;
+  name: string;
+  startsAt: string;
+  endsAt: string;
+};
+
+// An event can exist before its shifts are added, so it may have no start or end time yet
+export type EventDetail = Omit<EventSummary, 'startsAt' | 'endsAt'> & {
+  startsAt: string | null;
+  endsAt: string | null;
+  description: string;
+  shifts: Shift[];
+};
+
 export type EventFilters = {
   q: string;
   cause: Cause | '';
@@ -56,4 +71,8 @@ export function fetchEvents({ q, cause, when, openOnly }: EventFilters) {
   if (cause) params.set('cause', cause);
   if (openOnly) params.set('openOnly', 'true');
   return apiFetch<{ events: EventSummary[]; total: number }>(`/api/events?${params}`);
+}
+
+export function fetchEvent(id: string) {
+  return apiFetch<EventDetail>(`/api/events/${encodeURIComponent(id)}`);
 }
