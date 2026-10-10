@@ -33,9 +33,10 @@ Requirements are in `specs/identity-access/spec.md`.
 - Certificates are cached for as long as the response's `Cache-Control: max-age` allows.
 - `jwtVerify` checks the signature, `exp`, `aud = FIREBASE_PROJECT_ID` and `iss = https://securetoken.google.com/<projectId>`.
 - On top of that we check that `sub` (the uid) is non-empty, and that `iat` and `auth_time` aren't in the future (with 5 seconds of tolerance for clock differences).
-- It returns `{ uid, email, name? }`.
+- It also requires a non-empty `email`, because linking users depends on it.
+- It returns `{ uid, email, name? }`, or `null` for any invalid token. Infrastructure failures, such as Google's certificates being unreachable, still throw, so they become a 500 instead of a misleading 401.
 
-`createFirebaseTokenVerifier({ projectId, getCertificates })` takes the certificate fetcher as a parameter, so tests can sign tokens with a key pair they generate themselves.
+`createFirebaseTokenVerifier({ projectId, getPublicKeys })` takes the key fetcher as a parameter, so tests can sign tokens with a key pair they generate themselves. The production fetcher parses Google's X.509 certificates into public keys and reads `max-age`. It is tested separately against a saved copy of Google's real certificates, because Node can't create a certificate for a test key pair without OpenSSL.
 
 - **Alternative rejected:** `firebase-admin`. Its docs require a service account even just to verify tokens, which would put a long-lived private key on Render for a read-only check. It's also a much bigger dependency.
 
@@ -61,6 +62,7 @@ Requirements are in `specs/identity-access/spec.md`.
 
 Details:
 - The name comes from the token's `name` claim, or else the part of the email before the @.
+- When a linked user's token carries a `name` that differs from the stored one, the stored name is updated. Registration sets the display name just after creating the account, so the header's first `/api/me` call can arrive before the name exists. The register page refetches `/api/me` after its forced token refresh.
 - Prisma runs this upsert shape as a single `INSERT … ON CONFLICT`, so two simultaneous first requests can't create two records.
 - Roles **never** come from the token.
 - **Alternative rejected:** roles as Firebase custom claims. Setting them needs a service account, changing them needs a token refresh, and there would be two sources of truth for roles.
