@@ -32,7 +32,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 7. Role-aware header
 
-- [ ] 7.1 Add the "Log in" link, the user chip menu with "Sign out" (clearing the query cache), the admin-only "Admin" link and the phone-menu versions; verify by hand at 1280px and 390px as visitor, demo volunteer and demo admin, and that signing out returns to `/` showing "Log in"
+- [x] 7.1 Add the "Log in" link, the user chip menu with "Sign out" (clearing the query cache), the admin-only "Admin" link and the phone-menu versions; verify by hand at 1280px and 390px as visitor, demo volunteer and demo admin, and that signing out returns to `/` showing "Log in"
 
 ## 8. Registration (cut first if behind schedule)
 

@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { onIdTokenChanged, type User } from 'firebase/auth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { onIdTokenChanged, signOut, type User } from 'firebase/auth';
 import { createContext, use, useEffect, useState, type ReactNode } from 'react';
+import { useNavigate } from 'react-router';
 import { apiFetch } from './api';
 import { auth } from './firebase';
 import { useServerReady } from './server-health';
@@ -52,4 +53,17 @@ export function useMe() {
     queryFn: () => apiFetch<Me>('/api/me'),
     enabled: uid !== null && serverReady,
   });
+}
+
+export function useSignOut() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  return async () => {
+    // Leave first, so a protected page doesn't bounce to /login when the session ends
+    await navigate('/');
+    await signOut(auth);
+    // Drops the previous user's data so none of it stays on screen for the next person
+    queryClient.clear();
+  };
 }
