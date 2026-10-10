@@ -13,7 +13,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 3. State sweep
 
-- [ ] 3.1 Check every loading, empty, error and toast scenario in the specs on all four screens (slow responses, a forced `500`, empty data, each `409`) and fix any gap; verify with a browser script that reaches each state and checks its text
+- [x] 3.1 Check every loading, empty, error and toast scenario in the specs on all four screens (slow responses, a forced `500`, empty data, each `409`) and fix any gap; verify with a browser script that reaches each state and checks its text
 
 ## 4. README
 
