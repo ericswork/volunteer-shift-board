@@ -42,8 +42,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 8. Layout and routes
 
-- [ ] 8.1 Add Header (wordmark, nav with `aria-current`, compact "Shift Board" header with a menu button below 640px), Footer, page container and focus ring styles; verify by keyboard (tab order, focus ring, Escape closes the menu) and at 360px (no sideways scroll)
-- [ ] 8.2 Add the routes `/`, `/events/:id`, `/my-shifts` and `/admin` as placeholders, plus the not-found page and the crash fallback; verify `/does-not-exist` shows "Page not found" and a deliberately throwing component shows "Something went wrong"
+- [x] 8.1 Add Header (wordmark, nav with `aria-current`, compact "Shift Board" header with a menu button below 640px), Footer, page container and focus ring styles; verify by keyboard (tab order, focus ring, Escape closes the menu) and at 360px (no sideways scroll)
+- [x] 8.2 Add the routes `/`, `/events/:id`, `/my-shifts` and `/admin` as placeholders, plus the not-found page and the crash fallback; verify `/does-not-exist` shows "Page not found" and a deliberately throwing component shows "Something went wrong"
 
 ## 9. Waking-up notice
 
