@@ -1,14 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import { Link, useParams } from 'react-router';
-import { SECONDARY_BUTTON } from '../components/buttons';
 import { CauseChip } from '../components/CauseChip';
 import { ErrorState } from '../components/ErrorState';
 import { EventSidePanels } from '../components/EventSidePanels';
 import { PageContainer } from '../components/layout/PageContainer';
+import { ShiftAction } from '../components/ShiftAction';
 import { ShiftRow } from '../components/ShiftRow';
+import { SignedUpBanner } from '../components/SignedUpBanner';
 import { StatusPill } from '../components/StatusPill';
 import { ApiError } from '../lib/api';
+import { useAuth } from '../lib/auth';
 import { fetchEvent, type EventDetail } from '../lib/events';
 import { formatDate, formatTimeRange, spotsLabel } from '../lib/format';
 import { useServerReady } from '../lib/server-health';
@@ -17,10 +19,15 @@ const H1 = 'text-[30px] leading-[1.15] font-bold tracking-[-0.01em] sm:text-[38p
 
 export function EventDetailPage() {
   const { eventId = '' } = useParams();
+  const authState = useAuth();
+  const serverReady = useServerReady();
+  const uid = authState.status === 'signed-in' ? authState.user.uid : null;
+  // The answer depends on who asks (viewer state), so the user is part of the key, and the
+  // request waits until the sign-in state is known instead of fetching twice
   const event = useQuery({
-    queryKey: ['event', eventId],
+    queryKey: ['event', eventId, uid],
     queryFn: () => fetchEvent(eventId),
-    enabled: useServerReady(),
+    enabled: serverReady && authState.status !== 'loading',
   });
 
   let content;
@@ -77,6 +84,10 @@ function EventDetails({ event }: { event: EventDetail }) {
 
       <p className="mt-3 max-w-3xl text-[17px] leading-[1.6]">{event.description}</p>
 
+      <div className="mt-6 empty:hidden">
+        <SignedUpBanner shifts={event.shifts} />
+      </div>
+
       <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section aria-labelledby="choose-a-shift">
           <h2 id="choose-a-shift" className="text-[22px] font-bold">
@@ -88,20 +99,15 @@ function EventDetails({ event }: { event: EventDetail }) {
             <ul className="mt-4 space-y-4">
               {event.shifts.map((shift) => (
                 <li key={shift.id}>
-                  <ShiftRow
-                    shift={shift}
-                    action={
-                      shift.status === 'full' && (
-                        <button type="button" disabled className={`${SECONDARY_BUTTON} w-full`}>
-                          Shift full
-                        </button>
-                      )
-                    }
-                  />
+                  <ShiftRow shift={shift} action={<ShiftAction shift={shift} />} />
                 </li>
               ))}
             </ul>
           )}
+          <p className="mt-4 text-[15px] text-text-muted">
+            You can only sign up for one shift at a time. Shifts that overlap one you've already
+            joined are unavailable.
+          </p>
         </section>
 
         <EventSidePanels />

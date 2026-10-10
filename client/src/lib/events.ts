@@ -23,11 +23,17 @@ export type EventSummary = Availability & {
   location: string;
 };
 
+// Present only when the request was signed in; the server decides it
+export type ViewerState =
+  | { state: 'signed_up'; signupId: string; canCancel: boolean }
+  | { state: 'started' | 'full' | 'overlap' | 'open' };
+
 export type Shift = Availability & {
   id: string;
   name: string;
   startsAt: string;
   endsAt: string;
+  viewer?: ViewerState;
 };
 
 // An event can exist before its shifts are added, so it may have no start or end time yet
