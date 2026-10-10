@@ -3,7 +3,7 @@ import { getEnv } from './config/env.js';
 
 try {
   const env = getEnv();
-  createApp().listen(env.PORT, () => {
+  createApp({ clientOrigin: env.CLIENT_ORIGIN }).listen(env.PORT, () => {
     console.log(`API listening on http://localhost:${env.PORT}`);
   });
 } catch (error) {

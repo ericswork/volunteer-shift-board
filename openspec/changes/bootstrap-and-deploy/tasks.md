@@ -15,8 +15,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 3. Errors, validation and CORS
 
-- [ ] 3.1 Add `lib/errors.ts`, the `errorHandler` and `notFound` middleware, and `validate(schema)`; verify with Supertest that `GET /api/nope` returns the 404 `NOT_FOUND` envelope, a throwing route returns the 500 `INTERNAL_ERROR` envelope without a stack, and an invalid query returns `400 VALIDATION_ERROR` with `details`
-- [ ] 3.2 Add the CORS allowlist; verify with Supertest that the configured origin and `http://localhost:5173` get `Access-Control-Allow-Origin` and `https://evil.example` does not
+- [x] 3.1 Add `lib/errors.ts`, the `errorHandler` and `notFound` middleware, and `validate(schema)`; verify with Supertest that `GET /api/nope` returns the 404 `NOT_FOUND` envelope, a throwing route returns the 500 `INTERNAL_ERROR` envelope without a stack, and an invalid query returns `400 VALIDATION_ERROR` with `details`
+- [x] 3.2 Add the CORS allowlist; verify with Supertest that the configured origin and `http://localhost:5173` get `Access-Control-Allow-Origin` and `https://evil.example` does not
 
 ## 4. Database schema
 
