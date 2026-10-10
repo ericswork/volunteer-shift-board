@@ -2,11 +2,11 @@ import { randomUUID } from 'node:crypto';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { seed } from '../prisma/seed/seed.js';
-import { createApp } from '../src/app.js';
 import { prisma } from '../src/db/client.js';
 import * as clock from '../src/lib/clock.js';
+import { createTestApp } from './helpers.js';
 
-const app = createApp({ clientOrigin: 'http://localhost:5173' });
+const app = createTestApp();
 const now = new Date('2026-10-10T04:00:00Z'); // noon on Saturday 2026-10-10 in Manila
 
 const UPCOMING = [

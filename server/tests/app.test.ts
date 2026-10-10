@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
-import { createApp } from '../src/app.js';
+import { createTestApp } from './helpers.js';
 
 const clientOrigin = 'https://shift-board.vercel.app';
-const app = createApp({ clientOrigin });
+const app = createTestApp(clientOrigin);
 
 describe('createApp', () => {
   it('answers unknown API routes with the NOT_FOUND envelope', async () => {

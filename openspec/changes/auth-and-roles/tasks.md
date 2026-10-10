@@ -14,8 +14,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 3. Current user (server)
 
-- [ ] 3.1 Make `createApp` take `verifyToken`, add the `authenticate` and `requireAuth` middleware and a `currentUser(res)` helper, and pass the real verifier in `server.ts`; verify with Supertest that `GET /api/me` without a header, and with an unverifiable token, returns `401 UNAUTHENTICATED`
-- [ ] 3.2 Add `lib/initials.ts`, the users data functions, `services/users.resolveUser` (find by uid, else upsert by lowercased email) and `GET /api/me`; verify tests: the demo admin's first request links the seeded record (role `admin`, initials `DA`) and the second finds it by uid; an unknown email creates a volunteer; two simultaneous first requests leave exactly one record; initials for "Demo Volunteer", "Tomás Silva" and a single-word name
+- [x] 3.1 Make `createApp` take `verifyToken`, add the `authenticate` and `requireAuth` middleware and a `currentUser(res)` helper, and pass the real verifier in `server.ts`; verify with Supertest that `GET /api/me` without a header, and with an unverifiable token, returns `401 UNAUTHENTICATED`
+- [x] 3.2 Add `lib/initials.ts`, the users data functions, `services/users.resolveUser` (find by uid, else upsert by lowercased email) and `GET /api/me`; verify tests: the demo admin's first request links the seeded record (role `admin`, initials `DA`) and the second finds it by uid; an unknown email creates a volunteer; two simultaneous first requests leave exactly one record; initials for "Demo Volunteer", "Tomás Silva" and a single-word name
 
 ## 4. Admin guard (server)
 

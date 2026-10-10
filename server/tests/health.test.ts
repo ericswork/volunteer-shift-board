@@ -1,10 +1,10 @@
 import request from 'supertest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createApp } from '../src/app.js';
 import * as healthData from '../src/data/health.js';
 import { checkHealth } from '../src/services/health.js';
+import { createTestApp } from './helpers.js';
 
-const app = createApp({ clientOrigin: 'http://localhost:5173' });
+const app = createTestApp();
 
 afterEach(() => {
   vi.useRealTimers();
