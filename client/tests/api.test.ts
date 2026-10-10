@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ApiError, apiFetch, shouldRetry } from '../src/lib/api';
 
+// Stands in for the Firebase Auth instance, so tests can sign a user in or out
+const firebaseAuth = vi.hoisted(() => ({
+  currentUser: null as null | { getIdToken: () => Promise<string> },
+}));
+vi.mock('../src/lib/firebase', () => ({ auth: firebaseAuth }));
+
 function respondWith(body: string, status = 200, contentType = 'application/json') {
   vi.stubGlobal(
     'fetch',
@@ -10,7 +16,13 @@ function respondWith(body: string, status = 200, contentType = 'application/json
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  firebaseAuth.currentUser = null;
 });
+
+function sentHeaders() {
+  const [, init] = vi.mocked(fetch).mock.calls[0]!;
+  return new Headers(init?.headers);
+}
 
 describe('apiFetch', () => {
   it('returns the parsed JSON body', async () => {
@@ -40,6 +52,25 @@ describe('apiFetch', () => {
 
     await expect(apiFetch('/api/health')).rejects.toBeInstanceOf(ApiError);
     await expect(apiFetch('/api/health')).rejects.toMatchObject({ code: 'NETWORK_ERROR' });
+  });
+});
+
+describe('apiFetch authorization', () => {
+  it('sends the Firebase ID token as a Bearer header when signed in', async () => {
+    firebaseAuth.currentUser = { getIdToken: async () => 'token-123' };
+    respondWith('{"id":"u1"}');
+
+    await apiFetch('/api/me');
+
+    expect(sentHeaders().get('Authorization')).toBe('Bearer token-123');
+  });
+
+  it('sends no Authorization header when signed out', async () => {
+    respondWith('{"status":"ok"}');
+
+    await apiFetch('/api/health');
+
+    expect(sentHeaders().has('Authorization')).toBe(false);
   });
 });
 

@@ -23,7 +23,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 5. Client auth plumbing
 
-- [ ] 5.1 Install `firebase`; add `lib/firebase.ts`, the `VITE_FIREBASE_*` and `VITE_DEMO_*` keys in `client/.env.example`, `AuthProvider` (via `onIdTokenChanged`) and `useMe()` (enabled only when signed in and the server is ready); make `apiFetch` attach the Bearer token; verify unit tests that `apiFetch` sends `Authorization: Bearer <token>` when signed in and no header when signed out
+- [x] 5.1 Install `firebase`; add `lib/firebase.ts`, the `VITE_FIREBASE_*` and `VITE_DEMO_*` keys in `client/.env.example`, `AuthProvider` (via `onIdTokenChanged`) and `useMe()` (enabled only when signed in and the server is ready); make `apiFetch` attach the Bearer token; verify unit tests that `apiFetch` sends `Authorization: Bearer <token>` when signed in and no header when signed out
 
 ## 6. Login and protected pages
 

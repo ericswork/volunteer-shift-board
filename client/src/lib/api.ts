@@ -1,4 +1,5 @@
 import { API_URL } from '../config';
+import { auth } from './firebase';
 
 export type ErrorDetail = { path: string; message: string };
 
@@ -26,6 +27,10 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   const headers = new Headers(init.headers);
   headers.set('Accept', 'application/json');
   if (init.body) headers.set('Content-Type', 'application/json');
+
+  // getIdToken refreshes the token itself when it is about to expire
+  const token = await auth.currentUser?.getIdToken();
+  if (token) headers.set('Authorization', `Bearer ${token}`);
 
   let response: Response;
   try {
