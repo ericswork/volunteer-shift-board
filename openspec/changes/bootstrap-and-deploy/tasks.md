@@ -47,7 +47,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 9. Waking-up notice
 
-- [ ] 9.1 Add `useServerHealth` and the notice (3 s → "Waking up the server…", 90 s → "We couldn't reach the server." with "Try again") and gate data queries on health; verify with the server stopped (notice after 3 s), started mid-wait (clears without a reload) and left stopped (give-up message after 90 s, and "Try again" restarts the check)
+- [x] 9.1 Add `useServerHealth` and the notice (3 s → "Waking up the server…", 90 s → "We couldn't reach the server." with "Try again") and gate data queries on health; verify with the server stopped (notice after 3 s), started mid-wait (clears without a reload) and left stopped (give-up message after 90 s, and "Try again" restarts the check)
 
 ## 10. Deploy and README
 
