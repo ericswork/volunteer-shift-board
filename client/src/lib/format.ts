@@ -22,6 +22,28 @@ export function formatTime(instant: string): string {
   return normalizeSpaces(timeFormat.format(new Date(instant)));
 }
 
+// "8:00 – 11:00 AM" when both ends share AM/PM, otherwise "10:30 AM – 12:00 PM"
+export function formatTimeRange(startsAt: string, endsAt: string): string {
+  const start = formatTime(startsAt);
+  const end = formatTime(endsAt);
+  const [startClock, startPeriod] = start.split(' ');
+  const [, endPeriod] = end.split(' ');
+  return startPeriod === endPeriod ? `${startClock} – ${end}` : `${start} – ${end}`;
+}
+
+export function spotsLabel({
+  capacity,
+  signedUpCount,
+  spotsLeft,
+}: {
+  capacity: number;
+  signedUpCount: number;
+  spotsLeft: number;
+}): string {
+  if (spotsLeft === 0) return `Full · ${signedUpCount} of ${capacity} taken`;
+  return `${spotsLeft} of ${capacity} spots left`;
+}
+
 // Newer ICU versions put a narrow no-break space before AM/PM; use a plain space everywhere
 function normalizeSpaces(text: string): string {
   return text.replace(/ /g, ' ');

@@ -16,8 +16,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 3. Shared UI pieces
 
-- [ ] 3.1 Add the `formatDate`, `formatTimeRange` and `spotsLabel` helpers; verify client unit tests for "Sat, Oct 17", "8:00 – 11:00 AM", "10:30 AM – 12:00 PM", "6 of 20 spots left" and "Full · 16 of 16 taken"
-- [ ] 3.2 Add `StatusPill`, `SpotsBar` and `CauseChip` using tokens.md colors; verify on a scratch page that each status shows its text label and correct colors, and that the bar width equals the booked percentage
+- [x] 3.1 Add the `formatDate`, `formatTimeRange` and `spotsLabel` helpers; verify client unit tests for "Sat, Oct 17", "8:00 – 11:00 AM", "10:30 AM – 12:00 PM", "6 of 20 spots left" and "Full · 16 of 16 taken"
+- [x] 3.2 Add `StatusPill`, `SpotsBar` and `CauseChip` using tokens.md colors; verify on a scratch page that each status shows its text label and correct colors, and that the bar width equals the booked percentage
 
 ## 4. Events list page
 
