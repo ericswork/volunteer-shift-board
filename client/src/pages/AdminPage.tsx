@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { AddShiftForm } from '../components/admin/AddShiftForm';
 import { EventsTable } from '../components/admin/EventsTable';
+import { NewEventDialog } from '../components/admin/NewEventDialog';
 import { RosterPanel } from '../components/admin/RosterPanel';
 import { ErrorState } from '../components/ErrorState';
 import { PageContainer } from '../components/layout/PageContainer';
@@ -48,6 +49,7 @@ export function AdminPage() {
             Create events and shifts, and see who has signed up.
           </p>
         </div>
+        <NewEventDialog onCreated={setChosenEventId} />
       </div>
 
       {/* Phones stack table, roster, form. From lg the roster spans both rows, and the 1fr second

@@ -22,6 +22,13 @@ export function formatTime(instant: string): string {
   return normalizeSpaces(timeFormat.format(new Date(instant)));
 }
 
+const isoDateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: APP_TIMEZONE });
+
+// Today in the app time zone as 'YYYY-MM-DD' (the en-CA locale writes dates that way)
+export function appToday(): string {
+  return isoDateFormat.format(new Date());
+}
+
 const monthDayFormat = new Intl.DateTimeFormat('en-US', {
   timeZone: APP_TIMEZONE,
   month: 'short',

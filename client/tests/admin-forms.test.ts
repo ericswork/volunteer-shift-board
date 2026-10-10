@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest';
-import { shiftFormSchema } from '../src/lib/admin-forms';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { eventFormSchema, shiftFormSchema } from '../src/lib/admin-forms';
 
 const valid = { name: 'Greet and check in', startTime: '08:30', endTime: '09:00', capacity: 2 };
 
-function errorsFor(input: Record<string, unknown>) {
-  const result = shiftFormSchema.safeParse(input);
+type Schema = typeof shiftFormSchema | typeof eventFormSchema;
+
+function errorsFor(input: Record<string, unknown>, schema: Schema = shiftFormSchema) {
+  const result = schema.safeParse(input);
   return result.success ? {} : Object.fromEntries(result.error.issues.map((i) => [i.path.join('.'), i.message]));
 }
 
@@ -50,5 +52,57 @@ describe('shiftFormSchema', () => {
       startTime: 'Enter a start time.',
       endTime: 'Enter an end time.',
     });
+  });
+});
+
+describe('eventFormSchema', () => {
+  const event = {
+    title: 'Riverside Book Swap',
+    cause: 'education',
+    date: '2026-10-11',
+    location: 'Riverside Community Hall',
+    description: 'Bring a book, take a book.',
+  };
+  const eventErrors = (changes: Record<string, unknown>) => errorsFor({ ...event, ...changes }, eventFormSchema);
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    // 4:00 AM on Oct 11 in Manila, while the Los Angeles test zone is still on Oct 10
+    vi.setSystemTime(new Date('2026-10-10T20:00:00Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('accepts an event dated today in Manila', () => {
+    expect(eventFormSchema.safeParse(event).success).toBe(true);
+  });
+
+  it('rejects yesterday in Manila', () => {
+    expect(eventErrors({ date: '2026-10-10' })).toEqual({ date: 'Pick today or a later date.' });
+  });
+
+  it('asks for a date when it is missing or not a real date', () => {
+    expect(eventErrors({ date: '' })).toEqual({ date: 'Enter a date.' });
+    expect(eventErrors({ date: '2026-02-30' })).toEqual({ date: 'Enter a date.' });
+  });
+
+  it('asks for one of the six causes', () => {
+    expect(eventErrors({ cause: '' })).toEqual({ cause: 'Choose a cause.' });
+    expect(eventErrors({ cause: 'sports' })).toEqual({ cause: 'Choose a cause.' });
+  });
+
+  it('keeps the title and location between 3 and 100 characters', () => {
+    expect(eventErrors({ title: 'ab', location: 'x'.repeat(101) })).toEqual({
+      title: 'Use 3 to 100 characters.',
+      location: 'Use 3 to 100 characters.',
+    });
+    expect(eventFormSchema.safeParse({ ...event, title: 'abc', location: 'x'.repeat(100) }).success).toBe(true);
+  });
+
+  it('needs a description of up to 1,000 characters', () => {
+    expect(eventErrors({ description: '  ' })).toEqual({ description: 'Enter a description.' });
+    expect(eventErrors({ description: 'x'.repeat(1001) })).toEqual({ description: 'Use 1,000 characters or fewer.' });
   });
 });

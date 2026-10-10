@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import type { ShiftForm } from './admin-forms';
+import type { EventForm, ShiftForm } from './admin-forms';
 import { apiFetch } from './api';
 import type { Availability, AvailabilityStatus, Cause } from './events';
 import { refreshAfterSignupChange, showServerError } from './signups';
@@ -65,6 +65,20 @@ export function useAddShift() {
       void queryClient.invalidateQueries({ queryKey: ['admin-events'] });
       void queryClient.invalidateQueries({ queryKey: ['event'] });
       void queryClient.invalidateQueries({ queryKey: ['events'] });
+    },
+  });
+}
+
+export function useCreateEvent() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (event: EventForm) =>
+      apiFetch<{ id: string }>('/api/admin/events', { method: 'POST', body: JSON.stringify(event) }),
+    // Awaited, so the new event is already in the table when the dialog closes and selects it.
+    // The public list hides events without shifts, so it has nothing to refresh yet.
+    onSuccess: async (_, event) => {
+      await queryClient.invalidateQueries({ queryKey: ['admin-events'] });
+      toast.success(`Created ${event.title}.`);
     },
   });
 }

@@ -34,7 +34,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 8. New event dialog (client; second cut if behind)
 
-- [ ] 8.1 Add the "New event" button and dialog (focus trapped, Escape closes it, focus returns to the button) with the event form validated like the shift form; on success, select the new event and preselect it in the add-shift form; verify in the browser that creating "Riverside Book Swap" closes the dialog, shows it in the table with "No shifts yet", shows "No shifts yet. Add one below." and puts it in the form's Event field
+- [x] 8.1 Add the "New event" button and dialog (focus trapped, Escape closes it, focus returns to the button) with the event form validated like the shift form; on success, select the new event and preselect it in the add-shift form; verify in the browser that creating "Riverside Book Swap" closes the dialog, shows it in the table with "No shifts yet", shows "No shifts yet. Add one below." and puts it in the form's Event field
 
 ## 9. Deploy and verify
 

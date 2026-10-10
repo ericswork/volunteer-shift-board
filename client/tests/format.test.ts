@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { dateBlock, formatDate, formatMonthDay, formatTime, formatTimeRange, spotsLabel } from '../src/lib/format';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { appToday, dateBlock, formatDate, formatMonthDay, formatTime, formatTimeRange, spotsLabel } from '../src/lib/format';
 
 // Sort donations in the seed: 9:00 AM on Saturday 2026-10-17 in Manila
 const sortDonationsStart = '2026-10-17T01:00:00.000Z';
@@ -57,5 +57,18 @@ describe('dateBlock', () => {
 describe('formatMonthDay', () => {
   it('prints the Manila month and day of a sign-up', () => {
     expect(formatMonthDay('2026-10-02T17:30:00.000Z')).toBe('Oct 3');
+  });
+});
+
+describe('appToday', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('uses the Manila date even when the device is still on the day before', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    // 1:00 PM Oct 10 in Los Angeles (the test zone) is 4:00 AM Oct 11 in Manila
+    vi.setSystemTime(new Date('2026-10-10T20:00:00Z'));
+    expect(appToday()).toBe('2026-10-11');
   });
 });
