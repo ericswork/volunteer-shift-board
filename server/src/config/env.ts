@@ -4,6 +4,7 @@ const envSchema = z.object({
   DATABASE_URL: z.url(),
   DIRECT_URL: z.url(),
   CLIENT_ORIGIN: z.url(),
+  FIREBASE_PROJECT_ID: z.string().min(1),
   APP_TIMEZONE: z
     .string()
     .refine(isTimeZone, 'Must be an IANA time zone such as Asia/Manila')

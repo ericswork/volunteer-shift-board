@@ -4,13 +4,13 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 1. Owner setup
 
-- [ ] 1.1 (owner) Create the Firebase project with Email/Password sign-in enabled, add `lauritzkeans-volunteer-shift-board.vercel.app` to Authentication → Settings → Authorized domains, and add the users `demo.volunteer@example.com` and `demo.admin@example.com`; verify both appear under Authentication → Users
-- [ ] 1.2 (owner) Register a Web app in Project settings and share the `apiKey`, `authDomain` and `projectId` values (public by design) plus the two demo passwords; verify the values are recorded in `client/.env` and the server `.env` files once groups 2 and 5 add the keys
+- [x] 1.1 (owner) Create the Firebase project with Email/Password sign-in enabled, add `lauritzkeans-volunteer-shift-board.vercel.app` to Authentication → Settings → Authorized domains, and add the users `demo.volunteer@example.com` and `demo.admin@example.com`; verify both appear under Authentication → Users
+- [x] 1.2 (owner) Register a Web app in Project settings and share the `apiKey`, `authDomain` and `projectId` values (public by design) plus the two demo passwords; verify the values are recorded in `client/.env` and the server `.env` files once groups 2 and 5 add the keys
 
 ## 2. Token verification (server)
 
-- [ ] 2.1 Install `jose` and add `lib/firebase-token.ts` with `createFirebaseTokenVerifier({ projectId, getCertificates })`, which caches certificates by `Cache-Control: max-age`; verify unit tests with a locally generated key pair: a valid token returns `uid`, `email` and `name`, and a wrong `aud`, wrong `iss`, expired token, future `auth_time`, empty `sub`, unknown `kid` or non-RS256 algorithm is rejected
-- [ ] 2.2 Add required `FIREBASE_PROJECT_ID` to the env schema, `server/.env.example`, the local `.env` files and `render.yaml`; verify the env unit tests cover the new variable and the server refuses to start without it
+- [x] 2.1 Install `jose` and add `lib/firebase-token.ts` with `createFirebaseTokenVerifier({ projectId, getCertificates })`, which caches certificates by `Cache-Control: max-age`; verify unit tests with a locally generated key pair: a valid token returns `uid`, `email` and `name`, and a wrong `aud`, wrong `iss`, expired token, future `auth_time`, empty `sub`, unknown `kid` or non-RS256 algorithm is rejected
+- [x] 2.2 Add required `FIREBASE_PROJECT_ID` to the env schema, `server/.env.example`, the local `.env` files and `render.yaml`; verify the env unit tests cover the new variable and the server refuses to start without it
 
 ## 3. Current user (server)
 

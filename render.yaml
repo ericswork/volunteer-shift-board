@@ -17,6 +17,8 @@ services:
         value: Asia/Manila
       - key: CLIENT_ORIGIN
         value: https://lauritzkeans-volunteer-shift-board.vercel.app
+      - key: FIREBASE_PROJECT_ID
+        value: volunteer-shift-board
       # Secrets: Render asks for these once, when the Blueprint is first applied
       - key: DATABASE_URL
         sync: false
