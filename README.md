@@ -11,8 +11,8 @@ Volunteers browse upcoming events and sign up for shifts. Admins create events a
 
 Built one [OpenSpec](https://github.com/Fission-AI/OpenSpec) change at a time; the specs live in [`openspec/changes/`](openspec/changes/).
 
-- Done: project setup, database schema, demo data, page layout, cold-start handling, deployment
-- Next: browsing events, sign-in with demo logins, shift sign-ups, the admin dashboard
+- Done: project setup, database schema, demo data, page layout, cold-start handling, deployment, browsing and filtering events
+- Next: sign-in with demo logins, shift sign-ups, the admin dashboard
 
 ## Tech stack
 
@@ -91,6 +91,95 @@ Every `VITE_` variable is bundled into the browser code, so none of them may hol
 - **Client (Vercel):** import the repo with Root Directory `client` (Vite preset), and set `VITE_API_URL` to the Render URL and `VITE_APP_TIMEZONE` to `Asia/Manila`. [`client/vercel.json`](client/vercel.json) serves `index.html` for every path, so deep links survive a reload.
 
 Pushing to `main` redeploys both. Vercel preview deployments can't call the API, because CORS only allows the production client URL.
+
+## API
+
+Base URL: `https://lauritzkeans-volunteer-shift-board-api.onrender.com`. Every endpoint lives under `/api` and speaks JSON. Errors always have the same shape, and `details` appears only on validation errors:
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Some of the information sent is invalid.",
+    "details": [{ "path": "when", "message": "Invalid option: expected one of \"next7\"|\"next30\"|\"all\"" }]
+  }
+}
+```
+
+Every event and shift carries a `status` computed on the server: `full` when no spots are left, `filling` when 75% or more are taken, otherwise `open`. Times are UTC instants; dates are `YYYY-MM-DD` in the app time zone (Asia/Manila).
+
+### `GET /api/events`
+
+Upcoming events (dated today or later) that have at least one shift, sorted by date, then by earliest shift. No sign-in needed.
+
+| Parameter | Values | Default |
+|---|---|---|
+| `q` | Text matched in the title, location or description, ignoring case (up to 100 characters) | none |
+| `cause` | `food`, `environment`, `education`, `community`, `seniors` or `animals` | every cause |
+| `when` | `next7` or `next30` (today through 7 or 30 days ahead), or `all` | `all` |
+| `openOnly` | `true` keeps only events with a shift that still has a spot | `false` |
+
+```
+curl "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/events?q=pantry"
+```
+
+```json
+{
+  "events": [
+    {
+      "id": "05b30ea8-0f23-4240-8e37-f19b545404af",
+      "title": "Saturday Food Pantry Packing",
+      "cause": "food",
+      "date": "2026-10-17",
+      "startsAt": "2026-10-17T01:00:00.000Z",
+      "endsAt": "2026-10-17T05:00:00.000Z",
+      "location": "Riverside Community Hall",
+      "capacity": 20,
+      "signedUpCount": 14,
+      "spotsLeft": 6,
+      "status": "open"
+    }
+  ],
+  "total": 1
+}
+```
+
+Returns `200`, or `400 VALIDATION_ERROR` for an unknown `cause` or `when`, or a `q` longer than 100 characters.
+
+### `GET /api/events/:id`
+
+One event with the same fields, plus its `description` and its `shifts` sorted by start time. No sign-in needed. Event ids change whenever the demo data is re-seeded, so take one from the list above:
+
+```
+curl "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/events/<id>"
+```
+
+```json
+{
+  "id": "05b30ea8-0f23-4240-8e37-f19b545404af",
+  "title": "Saturday Food Pantry Packing",
+  "…": "the list fields above",
+  "description": "Help sort donated groceries and pack weekly boxes for local families. …",
+  "shifts": [
+    {
+      "id": "54bd4e7f-018e-4983-8eb6-daf89fdfa447",
+      "name": "Sort donations",
+      "startsAt": "2026-10-17T01:00:00.000Z",
+      "endsAt": "2026-10-17T02:30:00.000Z",
+      "capacity": 8,
+      "signedUpCount": 6,
+      "spotsLeft": 2,
+      "status": "filling"
+    }
+  ]
+}
+```
+
+Returns `200`, or `404 NOT_FOUND` for an unknown or malformed id:
+
+```
+curl -i "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/events/not-a-real-id"
+```
 
 ## Free-tier notes (checked 2026-10-10)
 

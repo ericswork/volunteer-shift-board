@@ -34,8 +34,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 6. Deploy and verify
 
-- [ ] 6.1 Push to `main` and verify on the live URLs: the list shows six events with the correct statuses, every filter works, a card opens its detail page, and the detail page reloads without a 404
-- [ ] 6.2 Add an "API" section to the README covering `GET /api/events` (parameters, example response) and `GET /api/events/:id`; verify the example `curl` commands work against the live API
+- [x] 6.1 Push to `main` and verify on the live URLs: the list shows six events with the correct statuses, every filter works, a card opens its detail page, and the detail page reloads without a 404
+- [x] 6.2 Add an "API" section to the README covering `GET /api/events` (parameters, example response) and `GET /api/events/:id`; verify the example `curl` commands work against the live API
 
 ## Workflow follow-up
 
