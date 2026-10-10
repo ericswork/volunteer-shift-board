@@ -8,8 +8,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 2. Roster and removal (server)
 
-- [ ] 2.1 Add `GET /api/admin/shifts/:id/roster` (shift summary plus sign-ups oldest first with `signupId`, `name`, `initials`, `signedUpAt`); verify tests: Sort donations lists Maya Reyes, Daniel Kim, Priya Nair, Tomás Silva, Hannah Lee, Omar Haddad in that order with 6 of 8 and `filling`; an unknown uuid and `not-a-real-id` → `404`
-- [ ] 2.2 Add `DELETE /api/admin/signups/:id` (any sign-up, no 24-hour check); verify tests: removing a sign-up on a shift starting in 3 hours → `204` and gone from the roster; removing it again → `404 NOT_FOUND`
+- [x] 2.1 Add `GET /api/admin/shifts/:id/roster` (shift summary plus sign-ups oldest first with `signupId`, `name`, `initials`, `signedUpAt`); verify tests: Sort donations lists Maya Reyes, Daniel Kim, Priya Nair, Tomás Silva, Hannah Lee, Omar Haddad in that order with 6 of 8 and `filling`; an unknown uuid and `not-a-real-id` → `404`
+- [x] 2.2 Add `DELETE /api/admin/signups/:id` (any sign-up, no 24-hour check); verify tests: removing a sign-up on a shift starting in 3 hours → `204` and gone from the roster; removing it again → `404 NOT_FOUND`
 
 ## 3. Add shift endpoint (server)
 

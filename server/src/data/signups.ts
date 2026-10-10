@@ -69,3 +69,17 @@ export function findSignupsForUser(
     include: { shift: { include: { event: { select: { id: true, title: true, location: true } } } } },
   });
 }
+
+export function findShiftWithRoster(shiftId: string, db = prisma) {
+  return db.shift.findUnique({
+    where: { id: shiftId },
+    include: {
+      signups: { orderBy: { createdAt: 'asc' }, include: { user: { select: { name: true } } } },
+    },
+  });
+}
+
+export async function deleteSignup(signupId: string, db = prisma) {
+  const { count } = await db.signup.deleteMany({ where: { id: signupId } });
+  return count > 0;
+}
