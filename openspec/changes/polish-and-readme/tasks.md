@@ -17,8 +17,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 4. README
 
-- [ ] 4.1 Capture screenshots of the four screens at 1280px and 390px into `docs/screenshots/` with a script; verify every file exists and opens
-- [ ] 4.2 Rewrite the README: overview with live links and demo logins, screenshots, a Mermaid architecture diagram, the full API reference (every endpoint with parameters, status codes and error codes), "Frontend highlights", "Backend highlights", setup steps, "Decisions I made and why" (linking the design docs), accessibility results, free-tier notes dated 2026-10-10, and known limitations; verify every relative link and image path resolves, and every `curl` example works against the live API
+- [x] 4.1 Capture screenshots of the four screens at 1280px and 390px into `docs/screenshots/` with a script; verify every file exists and opens
+- [x] 4.2 Rewrite the README: overview with live links and demo logins, screenshots, a Mermaid architecture diagram, the full API reference (every endpoint with parameters, status codes and error codes), "Frontend highlights", "Backend highlights", setup steps, "Decisions I made and why" (linking the design docs), accessibility results, free-tier notes dated 2026-10-10, and known limitations; verify every relative link and image path resolves, and every `curl` example works against the live API
 
 ## 5. Deploy and verify
 
