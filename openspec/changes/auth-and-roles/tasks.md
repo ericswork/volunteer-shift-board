@@ -27,8 +27,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 6. Login and protected pages
 
-- [ ] 6.1 Add React Hook Form and Zod, the `/login` page (email, password, "Continue as demo volunteer", "Continue as demo admin", link to register) and `authErrorMessage(code)`; verify unit tests for the error mapping, and by hand that a wrong password shows "Email or password is incorrect." and each demo button signs in to the right role
-- [ ] 6.2 Add the `RequireAuth` and `RequireAdmin` route wrappers and `safeNextPath`; verify unit tests that `safeNextPath` accepts `/my-shifts` and rejects `//evil.example`, `https://evil.example` and `javascript:alert(1)`, and by hand that `/my-shifts` while signed out goes to `/login` and back after sign-in, and that the demo volunteer on `/admin` sees "You don't have access to this page."
+- [x] 6.1 Add React Hook Form and Zod, the `/login` page (email, password, "Continue as demo volunteer", "Continue as demo admin", link to register) and `authErrorMessage(code)`; verify unit tests for the error mapping, and by hand that a wrong password shows "Email or password is incorrect." and each demo button signs in to the right role
+- [x] 6.2 Add the `RequireAuth` and `RequireAdmin` route wrappers and `safeNextPath`; verify unit tests that `safeNextPath` accepts `/my-shifts` and rejects `//evil.example`, `https://evil.example` and `javascript:alert(1)`, and by hand that `/my-shifts` while signed out goes to `/login` and back after sign-in, and that the demo volunteer on `/admin` sees "You don't have access to this page."
 
 ## 7. Role-aware header
 
