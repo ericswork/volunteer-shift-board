@@ -24,6 +24,10 @@ export function forbidden() {
   return new AppError(403, 'FORBIDDEN', "You don't have access to this.");
 }
 
+export function conflict(code: string, message: string) {
+  return new AppError(409, code, message);
+}
+
 export function validationError(details: ErrorDetail[]) {
   return new AppError(400, 'VALIDATION_ERROR', 'Some of the information sent is invalid.', details);
 }

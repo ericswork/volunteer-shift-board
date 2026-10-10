@@ -4,8 +4,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 1. Sign-up endpoint (server)
 
-- [ ] 1.1 Add the `canCancel(startsAt, now)` helper (more than 24 hours to go); verify unit tests: 25 hours ahead → true, exactly 24 hours → false, 23 hours → false
-- [ ] 1.2 Add the sign-up data functions (the two `SELECT … FOR UPDATE` locks through `tx.$queryRaw`, user first, then shift), `services/signups.signUp` (one transaction, 10 s timeout, checks in the design's order, Prisma `P2002` mapped to `ALREADY_SIGNED_UP`) and `POST /api/shifts/:id/signup` behind `requireAuth` (unknown or malformed id → 404); verify integration tests on the `test` branch with the clock pinned and a fresh seed: Sort donations 6/8 → `201` and 7 of 8 `filling`; anonymous → `401` and no row; Load delivery vans → `409 SHIFT_FULL`; Pack boxes holder signing up for Sort donations (back-to-back) → `201`; Morning walkers holder signing up for Kennel helpers → `409 SHIFT_OVERLAP`; a started shift → `409 SHIFT_STARTED`; a second identical sign-up → `409 ALREADY_SIGNED_UP`
+- [x] 1.1 Add the `canCancel(startsAt, now)` helper (more than 24 hours to go); verify unit tests: 25 hours ahead → true, exactly 24 hours → false, 23 hours → false
+- [x] 1.2 Add the sign-up data functions (the two `SELECT … FOR UPDATE` locks through `tx.$queryRaw`, user first, then shift), `services/signups.signUp` (one transaction, 10 s timeout, checks in the design's order, Prisma `P2002` mapped to `ALREADY_SIGNED_UP`) and `POST /api/shifts/:id/signup` behind `requireAuth` (unknown or malformed id → 404); verify integration tests on the `test` branch with the clock pinned and a fresh seed: Sort donations 6/8 → `201` and 7 of 8 `filling`; anonymous → `401` and no row; Load delivery vans → `409 SHIFT_FULL`; Pack boxes holder signing up for Sort donations (back-to-back) → `201`; Morning walkers holder signing up for Kennel helpers → `409 SHIFT_OVERLAP`; a started shift → `409 SHIFT_STARTED`; a second identical sign-up → `409 ALREADY_SIGNED_UP`
 
 ## 2. Concurrency tests
 
