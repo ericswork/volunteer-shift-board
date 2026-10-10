@@ -9,7 +9,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 2. Concurrency tests
 
-- [ ] 2.1 Add the parallel tests with `Promise.all` through Supertest: 10 volunteers on an empty capacity-3 shift → exactly three `201`, seven `409 SHIFT_FULL` and three rows; two volunteers racing for the last spot → exactly one wins; a double click → one `201`, one `409 ALREADY_SIGNED_UP`, one row; simultaneous Morning walkers and Kennel helpers for one volunteer → exactly one wins; verify they pass against the `test` branch through the pooled URL, and that the burst test fails when the two locks are commented out by hand (an experiment, not committed)
+- [x] 2.1 Add the parallel tests with `Promise.all` through Supertest: 10 volunteers on an empty capacity-3 shift → exactly three `201`, seven `409 SHIFT_FULL` and three rows; two volunteers racing for the last spot → exactly one wins; a double click → one `201`, one `409 ALREADY_SIGNED_UP`, one row; simultaneous Morning walkers and Kennel helpers for one volunteer → exactly one wins; verify they pass against the `test` branch through the pooled URL, and that the burst test fails when the two locks are commented out by hand (an experiment, not committed)
 
 ## 3. Cancel endpoint (server)
 
