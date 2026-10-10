@@ -30,7 +30,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 7. Add a shift form (client)
 
-- [ ] 7.1 Add `lib/admin-forms.ts` (copies of the server rules and messages), a `SelectField`, and the "Add a shift" form (Event, Shift name, Start time, End time, Capacity) with `mode: 'onBlur'`, `deps: ['endTime']` on the start time, server field errors through `setError`, and a reset that keeps the event on success; verify client unit tests for the schema, and in the browser that Start 10:30 and End 09:30 shows the mockup's error on leaving End, that fixing Start clears it, and that a valid shift shows "Shift added" and updates the table
+- [x] 7.1 Add `lib/admin-forms.ts` (copies of the server rules and messages), a `SelectField`, and the "Add a shift" form (Event, Shift name, Start time, End time, Capacity) with `mode: 'onBlur'`, `deps: ['endTime']` on the start time, server field errors through `setError`, and a reset that keeps the event on success; verify client unit tests for the schema, and in the browser that Start 10:30 and End 09:30 shows the mockup's error on leaving End, that fixing Start clears it, and that a valid shift shows "Shift added" and updates the table
 
 ## 8. New event dialog (client; second cut if behind)
 

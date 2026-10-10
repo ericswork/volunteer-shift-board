@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import type { ShiftForm } from './admin-forms';
 import { apiFetch } from './api';
 import type { Availability, AvailabilityStatus, Cause } from './events';
 import { refreshAfterSignupChange, showServerError } from './signups';
@@ -46,5 +47,24 @@ export function useRemoveSignup() {
         queryClient.invalidateQueries({ queryKey: ['admin-events'] }),
         queryClient.invalidateQueries({ queryKey: ['roster'] }),
       ]),
+  });
+}
+
+// Field errors are left to the form, which shows them under the inputs
+export function useAddShift() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ eventId, shift }: { eventId: string; shift: ShiftForm }) =>
+      apiFetch(`/api/admin/events/${encodeURIComponent(eventId)}/shifts`, {
+        method: 'POST',
+        body: JSON.stringify(shift),
+      }),
+    // Not awaited, so the form clears as soon as the server says yes instead of after the refetch
+    onSuccess: () => {
+      toast.success('Shift added');
+      void queryClient.invalidateQueries({ queryKey: ['admin-events'] });
+      void queryClient.invalidateQueries({ queryKey: ['event'] });
+      void queryClient.invalidateQueries({ queryKey: ['events'] });
+    },
   });
 }

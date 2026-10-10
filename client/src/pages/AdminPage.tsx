@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { AddShiftForm } from '../components/admin/AddShiftForm';
 import { EventsTable } from '../components/admin/EventsTable';
 import { RosterPanel } from '../components/admin/RosterPanel';
 import { ErrorState } from '../components/ErrorState';
@@ -49,7 +50,9 @@ export function AdminPage() {
         </div>
       </div>
 
-      <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)]">
+      {/* Phones stack table, roster, form. From lg the roster spans both rows, and the 1fr second
+          row absorbs its extra height, so the form sits right under the table. */}
+      <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:grid-rows-[auto_1fr]">
         <section aria-labelledby="events-heading" className={`${CARD} min-w-0 overflow-hidden`}>
           <h2 id="events-heading" className="p-5 text-[22px] font-bold">
             Events
@@ -58,12 +61,24 @@ export function AdminPage() {
         </section>
 
         {selectedEventId && (
-          <section aria-labelledby="roster-heading" className={`${CARD} p-5`}>
-            <h2 id="roster-heading" className="text-[22px] font-bold">
-              Roster
-            </h2>
-            <RosterPanel key={selectedEventId} eventId={selectedEventId} />
-          </section>
+          <>
+            <section
+              aria-labelledby="roster-heading"
+              className={`${CARD} p-5 lg:col-start-2 lg:row-span-2 lg:row-start-1`}
+            >
+              <h2 id="roster-heading" className="text-[22px] font-bold">
+                Roster
+              </h2>
+              <RosterPanel key={selectedEventId} eventId={selectedEventId} />
+            </section>
+
+            <section aria-labelledby="add-shift-heading" className={`${CARD} min-w-0 p-5 lg:col-start-1`}>
+              <h2 id="add-shift-heading" className="mb-4 text-[22px] font-bold">
+                Add a shift
+              </h2>
+              <AddShiftForm events={list} eventId={selectedEventId} onEventChange={setChosenEventId} />
+            </section>
+          </>
         )}
       </div>
     </PageContainer>
