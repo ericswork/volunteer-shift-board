@@ -19,7 +19,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 4. Admin guard (server)
 
-- [ ] 4.1 Mount an `/api/admin` router behind `requireAuth` and `requireAdmin`; verify with Supertest that `POST /api/admin/events` returns 401 for anonymous requests and `403 FORBIDDEN` for the demo volunteer (with no row created), and `404 NOT_FOUND` for the demo admin while no admin routes exist
+- [x] 4.1 Mount an `/api/admin` router behind `requireAuth` and `requireAdmin`; verify with Supertest that `POST /api/admin/events` returns 401 for anonymous requests and `403 FORBIDDEN` for the demo volunteer (with no row created), and `404 NOT_FOUND` for the demo admin while no admin routes exist
 
 ## 5. Client auth plumbing
 

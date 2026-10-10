@@ -2,12 +2,9 @@ import { randomUUID } from 'node:crypto';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '../src/db/client.js';
-import type { UserRole } from '../src/generated/prisma/client.js';
-import { createTestApp, signedInAs } from './helpers.js';
+import { createTestApp, DEMO_ADMIN, DEMO_VOLUNTEER, resetDemoUsers, signedInAs } from './helpers.js';
 
 const app = createTestApp();
-const DEMO_ADMIN = 'demo.admin@example.com';
-const DEMO_VOLUNTEER = 'demo.volunteer@example.com';
 const newEmails: string[] = [];
 
 function newEmail() {
@@ -16,18 +13,8 @@ function newEmail() {
   return email;
 }
 
-// Matches what the seed creates, without a Firebase link yet
-function resetDemoUser(email: string, name: string, role: UserRole) {
-  return prisma.user.upsert({
-    where: { email },
-    update: { name, role, firebaseUid: null },
-    create: { email, name, role },
-  });
-}
-
 beforeAll(async () => {
-  await resetDemoUser(DEMO_ADMIN, 'Demo Admin', 'admin');
-  await resetDemoUser(DEMO_VOLUNTEER, 'Demo Volunteer', 'volunteer');
+  await resetDemoUsers();
 });
 
 afterAll(async () => {

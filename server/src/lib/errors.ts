@@ -20,6 +20,10 @@ export function unauthenticated() {
   return new AppError(401, 'UNAUTHENTICATED', 'Please sign in to continue.');
 }
 
+export function forbidden() {
+  return new AppError(403, 'FORBIDDEN', "You don't have access to this.");
+}
+
 export function validationError(details: ErrorDetail[]) {
   return new AppError(400, 'VALIDATION_ERROR', 'Some of the information sent is invalid.', details);
 }
