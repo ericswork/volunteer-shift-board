@@ -36,8 +36,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 8. Deploy and verify
 
-- [ ] 8.1 Run both test suites (including the concurrency tests) against the `test` branch, then push to `main` and verify on the live URLs as Demo Volunteer: My shifts lists the three seeded shifts, signing up for and cancelling Sort donations works with toasts, and "Load delivery vans" stays "Shift full"; then re-seed production so the demo data starts clean
-- [ ] 8.2 Add a "How sign-ups stay correct" section to the README (the two row locks, the unique constraint, the commented-out-locks experiment, and the exclusion constraint as the at-scale option); verify each claim points to a test or file that exists
+- [x] 8.1 Run both test suites (including the concurrency tests) against the `test` branch, then push to `main` and verify on the live URLs as Demo Volunteer: My shifts lists the three seeded shifts, signing up for and cancelling Sort donations works with toasts, and "Load delivery vans" stays "Shift full"; then re-seed production so the demo data starts clean
+- [x] 8.2 Add a "How sign-ups stay correct" section to the README (the two row locks, the unique constraint, the commented-out-locks experiment, and the exclusion constraint as the at-scale option); verify each claim points to a test or file that exists
 
 ## Workflow follow-up
 

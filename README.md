@@ -44,6 +44,34 @@ server/     Express API, Prisma schema, migrations and seed
 openspec/   Specs and change proposals
 ```
 
+## How sign-ups stay correct
+
+Signing up is "check, then insert": is there a spot, is the volunteer already on this shift, does it clash with another of their shifts? Done naively, two requests can both read "7 of 8 taken" and both insert, leaving 9 people on an 8-person shift. The API closes that gap with one transaction ([`server/src/services/signups.ts`](server/src/services/signups.ts)):
+
+1. **Lock the volunteer's row, then the shift's row**, with `SELECT … FOR UPDATE` ([`server/src/data/signups.ts`](server/src/data/signups.ts)). Any other sign-up that needs one of those rows waits until this transaction commits. Postgres runs at its default isolation level, READ COMMITTED, so once the waiting request continues, its checks see the sign-up that just committed.
+   - The **shift** lock guards capacity. "At most 8 sign-ups" spans many rows, which a plain constraint can't express.
+   - The **volunteer** lock guards overlaps. Two overlapping shifts are different rows, so only a lock on the person stops two requests from passing the overlap check at the same moment.
+   - Every request locks the volunteer first and the shift second, so two transactions can never wait on each other in a circle (no deadlocks).
+2. **Check the rules** in the same transaction: the shift exists and hasn't started, the volunteer isn't already on it, a spot is free, and it doesn't overlap another of their shifts.
+3. **Insert the sign-up and commit**, which releases both locks.
+
+Behind the duplicate check sits a database guarantee: `UNIQUE (user_id, shift_id)` on `signups` ([`server/prisma/schema.prisma`](server/prisma/schema.prisma)). If the check were ever bypassed, the insert fails with Prisma error P2002 and the API still answers `409 ALREADY_SIGNED_UP` ([`server/tests/signups.test.ts`](server/tests/signups.test.ts), "falls back on the unique constraint").
+
+Cancelling, and an admin removing a volunteer, need no lock: deleting a sign-up can only free a spot, so it can't break a rule.
+
+**Tested against real Postgres.** [`server/tests/signups-concurrency.test.ts`](server/tests/signups-concurrency.test.ts) fires simultaneous requests at the Neon `test` branch, through the same pooled connection the app uses:
+
+| Race | Result |
+|---|---|
+| 10 volunteers, a capacity-3 shift | exactly 3 succeed, 7 get `SHIFT_FULL` |
+| 2 volunteers, the last spot | exactly 1 succeeds |
+| 1 volunteer double-clicks | exactly 1 sign-up |
+| 1 volunteer, two overlapping shifts at once | exactly 1 succeeds |
+
+To prove these tests can catch the race, they were run once with the two `FOR UPDATE` clauses removed. Three of the four failed, and all 10 volunteers got into the capacity-3 shift. The double-click test still passed, because the unique constraint caught the duplicate on its own.
+
+**Alternatives.** SERIALIZABLE isolation would also be correct, but Postgres then aborts one of the racing transactions, and the API would need a retry loop. "Wait your turn" is simpler to reason about. At a larger scale, the overlap rule could move into the database as an exclusion constraint (`EXCLUDE USING gist (user_id WITH =, tstzrange(starts_at, ends_at) WITH &&)`, with the `btree_gist` extension). That needs the shift times copied onto every sign-up, which is more machinery than a volunteer board needs.
+
 ## Run it locally
 
 You need Node 24 (`nvm use` reads `.nvmrc`) and a Neon project with `dev` and `test` branches.
