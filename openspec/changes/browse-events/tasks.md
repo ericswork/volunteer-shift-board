@@ -9,10 +9,10 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 2. Events API
 
-- [ ] 2.1 Add the Zod query schema and `GET /api/events` (route → controller → service → data) with the default sort; verify the integration test "default listing returns six events soonest first, total 6" on the `test` branch with the clock pinned
-- [ ] 2.2 Add the `q`, `cause`, `when` and `openOnly` filters; verify one integration test per spec scenario (library, GARDEN, animals, next7, openOnly), plus `when=tomorrow` and a 101-character `q` returning `400 VALIDATION_ERROR`
-- [ ] 2.3 Exclude events with no shifts and past events; verify with a test that inserts an empty event and a past event and checks that neither is listed
-- [ ] 2.4 Add `GET /api/events/:id` with shifts ordered by start; verify tests for the Food Pantry shift order and statuses, an unknown uuid → 404, and `not-a-real-id` → 404
+- [x] 2.1 Add the Zod query schema and `GET /api/events` (route → controller → service → data) with the default sort; verify the integration test "default listing returns six events soonest first, total 6" on the `test` branch with the clock pinned
+- [x] 2.2 Add the `q`, `cause`, `when` and `openOnly` filters; verify one integration test per spec scenario (library, GARDEN, animals, next7, openOnly), plus `when=tomorrow` and a 101-character `q` returning `400 VALIDATION_ERROR`
+- [x] 2.3 Exclude events with no shifts and past events; verify with a test that inserts an empty event and a past event and checks that neither is listed
+- [x] 2.4 Add `GET /api/events/:id` with shifts ordered by start; verify tests for the Food Pantry shift order and statuses, an unknown uuid → 404, and `not-a-real-id` → 404
 
 ## 3. Shared UI pieces
 
