@@ -27,6 +27,8 @@ Library versions on npm that day: Express 5.3, Zod 4.6, React 19.3, Vite 8.3, Ta
 ### 1. Two independent projects, `/client` and `/server`
 Each folder has its own `package.json`, and there is no shared package.
 - **Why:** Vercel builds `/client` and Render builds `/server`, each from its own root, with no extra tooling.
+- **One command for local development:** a root `package.json` holds only `concurrently`, so `npm run dev` starts both apps and `npm test` runs both suites. It isn't a workspace, so each app still installs and deploys from its own folder.
+- **Alternative rejected:** Turborepo. It needs npm workspaces, which would move Render's and Vercel's builds to the repo root, and its caching and task ordering pay off only with shared packages.
 - **Alternative rejected:** npm workspaces with a `shared/` package for Zod schemas. Only two forms share rules, and a workspace adds build-order and deploy configuration on both hosts. The client copies small form schemas for instant feedback; the server's schemas are the authority.
 
 ### 2. Server layers and their single responsibility
