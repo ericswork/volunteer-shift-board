@@ -88,6 +88,17 @@ describe('linking Firebase accounts to app users', () => {
     expect(res.body).toMatchObject({ name: 'Nova Reyes', email, role: 'volunteer', initials: 'NR' });
   });
 
+  it('takes the name from a later token when registration sets it after the first request', async () => {
+    const email = newEmail();
+    const uid = randomUUID();
+    const first = await request(app).get('/api/me').set(signedInAs(uid, email));
+
+    const later = await request(app).get('/api/me').set(signedInAs(uid, email, 'Rosa Delgado'));
+
+    expect(first.body.name).toBe(email.split('@')[0]);
+    expect(later.body).toMatchObject({ id: first.body.id, name: 'Rosa Delgado', initials: 'RD' });
+  });
+
   it('creates exactly one record when two first requests arrive together', async () => {
     const email = newEmail();
     const headers = signedInAs(randomUUID(), email);

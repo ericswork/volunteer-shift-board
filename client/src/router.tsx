@@ -7,6 +7,7 @@ import { EventsPage } from './pages/EventsPage';
 import { LoginPage } from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { RegisterPage } from './pages/RegisterPage';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
           { index: true, element: <EventsPage /> },
           { path: 'events/:eventId', element: <EventDetailPage /> },
           { path: 'login', element: <LoginPage /> },
+          { path: 'register', element: <RegisterPage /> },
           {
             element: <RequireAuth />,
             children: [

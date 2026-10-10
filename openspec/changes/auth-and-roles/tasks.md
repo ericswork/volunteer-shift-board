@@ -36,7 +36,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 8. Registration (cut first if behind schedule)
 
-- [ ] 8.1 Add the `/register` page (name, email, password of 8+ characters) using `createUserWithEmailAndPassword`, `updateProfile` and a forced token refresh, with the email-in-use field error; verify by hand that a new account lands signed in as a volunteer showing its initials, and that reusing an email shows "An account with this email already exists."
+- [x] 8.1 Add the `/register` page (name, email, password of 8+ characters) using `createUserWithEmailAndPassword`, `updateProfile` and a forced token refresh, with the email-in-use field error; verify by hand that a new account lands signed in as a volunteer showing its initials, and that reusing an email shows "An account with this email already exists."
 
 ## 9. Deploy and verify
 
