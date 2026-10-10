@@ -11,7 +11,7 @@ Before the code for each feature was written, a short plan was written for it: w
 
 ## Demo logins
 
-Both accounts are shared on purpose. The easiest way in is the **Continue as demo volunteer** or **Continue as demo admin** button on the login page.
+Both accounts are shared on purpose, and the demo data is reset every day at 08:00 UTC (4 PM in Manila). The easiest way in is the **Continue as demo volunteer** or **Continue as demo admin** button on the login page.
 
 | Account | Email | Password | What it can do |
 |---|---|---|---|
@@ -82,6 +82,8 @@ client/     React app (Vite); scripts/ has the accessibility check and the scree
 server/     Express API, Prisma schema, migrations, demo data (seed) and tests
 openspec/   Plans for each change: specs, designs and task lists
 docs/       Screenshots
+scripts/    Demo password reset, used by the daily workflow
+.github/    The daily demo reset workflow (GitHub Actions)
 ```
 
 ## Frontend highlights
@@ -429,10 +431,25 @@ Every `VITE_` variable ends up inside the JavaScript that the browser downloads,
   ```
   Render also runs `prisma migrate deploy` on every build.
 - **API (Render):** [`render.yaml`](render.yaml) describes the service as a Render Blueprint (a settings file that Render reads): free plan, Singapore region, build and start commands, and the health check. In Render, choose **New → Blueprint** and pick this repository. It asks once for `DATABASE_URL` and `DIRECT_URL`.
-- **Sign-in (Firebase):** a Firebase project with Email/Password sign-in turned on, the Vercel domain added under Authentication → Settings → Authorized domains, and the two demo users created by hand under Authentication → Users. The API doesn't need a service account, because it checks the tokens with Google's public certificates.
+- **Sign-in (Firebase):** a Firebase project with Email/Password sign-in turned on, the Vercel domain added under Authentication → Settings → Authorized domains, and the two demo users created by hand under Authentication → Users. The API doesn't need a service account, because it checks the tokens with Google's public certificates. Only the daily demo reset uses one (see below).
 - **Client (Vercel):** import the repository with Root Directory `client` (Vite preset). Then set `VITE_API_URL` to the Render URL, `VITE_APP_TIMEZONE` to `Asia/Manila`, and the five Firebase and demo-login variables from `client/.env.example`. [`client/vercel.json`](client/vercel.json) sends `index.html` for every path, so a direct link like `/my-shifts` still works after a reload.
 
 Pushing to `main` deploys both again. Vercel's preview deployments can't call the API, because CORS only allows the production client URL.
+
+### Daily demo reset
+
+The demo data is loaded again every day at 08:00 UTC (4 PM in Manila) by [`.github/workflows/reset-demo.yml`](.github/workflows/reset-demo.yml). The workflow can also be started by hand: **Actions → Reset demo data → Run workflow**. After the seed, the two demo passwords are checked by signing in with them, and a password is reset only when it no longer works ([`scripts/reset-demo-passwords.mjs`](scripts/reset-demo-passwords.mjs)). This check matters because setting a password signs out every session of that account, even when the new password is the same.
+
+The workflow needs these repository settings, under **Settings → Secrets and variables → Actions**:
+
+| Name | Kind | Value |
+|---|---|---|
+| `PROD_DIRECT_URL` | secret | Neon's direct connection string for the production branch (without the pooler) |
+| `FIREBASE_SERVICE_ACCOUNT` | secret | The Firebase service-account key (the whole JSON file), from Project settings → Service accounts |
+| `FIREBASE_WEB_API_KEY` | variable | The public Web API key, the same value as the client's `VITE_FIREBASE_API_KEY` |
+| `DEMO_VOLUNTEER_PASSWORD`, `DEMO_ADMIN_PASSWORD` | variables | The demo passwords from the table at the top |
+
+`firebase-admin` is installed only inside this job, so it isn't in any `package.json` and Render never installs it. The service-account key is a long-lived credential, so it is stored only as a GitHub secret and is used only by this job. Workload Identity Federation would remove the key completely (GitHub would get short-lived Google credentials instead of a stored key), and it is the planned next step for this setup.
 
 ## Free-tier notes (checked 2026-10-10)
 
@@ -443,7 +460,8 @@ Pushing to `main` deploys both again. Vercel's preview deployments can't call th
 ## Known limitations
 
 - Not included, on purpose: editing or deleting events and shifts, email notifications, waitlists, pagination, and more than one organization. A shift always starts and ends on its event's date, and all events use the same time zone.
-- The demo accounts are shared. If another reviewer changes something, you will see it until the demo data is loaded again.
+- The demo accounts are shared, so changes made by other reviewers stay visible until the next daily reset at 08:00 UTC (4 PM in Manila).
+- GitHub pauses scheduled workflows in public repositories after 60 days without any activity. If that happens, the daily reset can be turned on again from the Actions tab.
 - `npm audit` in `server/` reports high-severity warnings in `deepmerge-ts` and `mysql2`. Both come with the Prisma command-line tool, and neither handles untrusted input here: the first only merges Prisma's own config file, and the second is a MySQL driver that this project never loads. The only fix on offer is going back to Prisma 6.
 - After you sign out, a copied ID token keeps working until it expires (at most one hour). To check for cancelled (revoked) tokens, the server would need Firebase's Admin SDK and a service account, which was avoided on purpose.
 - `npm audit` in `client/` reports high-severity warnings in `@grpc/grpc-js`, which comes with Firebase's Firestore package. The app imports only Firebase's `app` and `auth` modules, and the built JavaScript contains no gRPC code.

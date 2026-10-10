@@ -5,7 +5,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 ## 1. Nightly demo reset (third cut if behind)
 
 - [x] 1.1 (owner) Generate a Firebase service-account key (Project settings → Service accounts) and add the repository secrets `PROD_DIRECT_URL` (Neon production direct connection string) and `FIREBASE_SERVICE_ACCOUNT` (the key JSON), plus the repository variables `DEMO_VOLUNTEER_PASSWORD` and `DEMO_ADMIN_PASSWORD`; verify all four appear under Settings → Secrets and variables → Actions
-- [ ] 1.2 Add `scripts/reset-demo-passwords.mjs` and `.github/workflows/reset-demo.yml` (08:00 UTC schedule and manual run: install server dependencies, seed production, install the pinned `firebase-admin` without saving it, reset both passwords); verify after the push by starting the workflow by hand: the run succeeds, the live list shows freshly dated events, and both demo buttons sign in
+- [x] 1.2 Add `scripts/reset-demo-passwords.mjs` and `.github/workflows/reset-demo.yml` (08:00 UTC schedule and manual run: install server dependencies, seed production, install the pinned `firebase-admin` without saving it, reset both passwords); verify after the push by starting the workflow by hand: the run succeeds, the live list shows freshly dated events, and both demo buttons sign in
 
 ## 2. Accessibility pass
 

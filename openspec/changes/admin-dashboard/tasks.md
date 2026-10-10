@@ -38,7 +38,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 9. Deploy and verify
 
-- [ ] 9.1 Push to `main` and verify on the live URLs as the demo admin: the table matches the seed, adding a shift and removing a volunteer work with toasts, and the demo volunteer still gets "You don't have access to this page."; then re-seed production so the demo data starts clean
+- [x] 9.1 Push to `main` and verify on the live URLs as the demo admin: the table matches the seed, adding a shift and removing a volunteer work with toasts, and the demo volunteer still gets "You don't have access to this page."; then re-seed production so the demo data starts clean
 
 ## Workflow follow-up
 
