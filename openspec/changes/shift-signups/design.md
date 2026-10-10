@@ -66,15 +66,15 @@ COMMIT;                                               -- locks released
 - A non-matching `user_id` returns 404 rather than 403, so sign-up ids can't be probed.
 
 ### 3. Viewer state is computed on the server
-- `GET /api/events/:id` uses `optionalAuth`: it attaches the user if the token is valid and ignores a missing or invalid one.
+- `GET /api/events/:id` uses the user that `authenticate` (from `auth-and-roles`) already attaches to every request with a valid token. A missing or invalid token leaves the request anonymous, so no separate optional-auth middleware is needed.
 - With a user, the service loads that user's sign-ups that overlap the event's day, then labels each shift in order: `signed_up` → `started` → `full` → `overlap` → `open`.
 - `canCancel` is computed with the same 24-hour helper the cancel endpoint uses.
 - **Alternative rejected:** computing state in the browser from `/api/me/signups`. It's a second source of truth for the rules, and an extra request.
 
 ### 4. Testable authentication
-- `createApp({ verifyToken })` takes the token verifier as a parameter.
-- Production passes Firebase Admin's `verifyIdToken`.
-- Tests pass a fake that maps `test-token:<uid>` to a user, so the concurrency tests can act as many volunteers without Firebase.
+- `createApp({ clientOrigin, verifyToken })` takes the token verifier as a parameter (built in `auth-and-roles`).
+- Production passes the `jose`-based Firebase token verifier.
+- Tests pass the shared fake from `tests/helpers.ts`, which accepts `test-token:<uid>:<email>[:<name>]`, so the concurrency tests can act as many volunteers without Firebase.
 
 ### 5. Concurrency tests against the Neon `test` branch
 - Each test fires requests with `Promise.all` through Supertest on `app.ts`. The Prisma pool size (10) is at least the burst size, so the requests really are concurrent.
