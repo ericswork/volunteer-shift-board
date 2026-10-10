@@ -1,14 +1,18 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { AppLayout } from './components/layout/AppLayout';
 import { RequireAdmin, RequireAuth } from './components/RouteGuards';
-import { AdminPage } from './pages/AdminPage';
 import { CrashFallback } from './pages/CrashFallback';
 import { EventDetailPage } from './pages/EventDetailPage';
 import { EventsPage } from './pages/EventsPage';
-import { LoginPage } from './pages/LoginPage';
-import { MyShiftsPage } from './pages/MyShiftsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
-import { RegisterPage } from './pages/RegisterPage';
+
+// Visitors land on the events pages, so everything behind sign-in (and the sign-in forms, with
+// their form and validation libraries) downloads only when first opened
+const LoginPage = lazy(() => import('./pages/LoginPage').then((m) => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('./pages/RegisterPage').then((m) => ({ default: m.RegisterPage })));
+const MyShiftsPage = lazy(() => import('./pages/MyShiftsPage').then((m) => ({ default: m.MyShiftsPage })));
+const AdminPage = lazy(() => import('./pages/AdminPage').then((m) => ({ default: m.AdminPage })));
 
 export const router = createBrowserRouter([
   {
