@@ -21,10 +21,10 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 4. Events list page
 
-- [ ] 4.1 Build the intro, `FilterCard` and result-count line, with filters stored in URL search params (300 ms debounced search, `replace` navigation); verify that selecting Animals plus open-only and reloading keeps both, and that the Back button leaves the page
-- [ ] 4.2 Build `EventCard` and the auto-fill grid (320px minimum, 24px gap); verify against PDF page 1: open card "View shifts" (primary), full card "View details" (secondary), and "Sat, Oct 17 · 9:00 AM – 1:00 PM" on the Food Pantry card
-- [ ] 4.3 Add skeleton, empty ("No shifts match your filters" + Clear filters) and error ("We couldn't load events." + Try again) states; verify by throttling the network, searching "zzz", and stopping the server
-- [ ] 4.4 Wire "Clear filters"; verify it resets every filter to its default and the URL returns to `/`
+- [x] 4.1 Build the intro, `FilterCard` and result-count line, with filters stored in URL search params (300 ms debounced search, `replace` navigation); verify that selecting Animals plus open-only and reloading keeps both, and that the Back button leaves the page
+- [x] 4.2 Build `EventCard` and the auto-fill grid (320px minimum, 24px gap); verify against PDF page 1: open card "View shifts" (primary), full card "View details" (secondary), and "Sat, Oct 17 · 9:00 AM – 1:00 PM" on the Food Pantry card
+- [x] 4.3 Add skeleton, empty ("No shifts match your filters" + Clear filters) and error ("We couldn't load events." + Try again) states; verify by throttling the network, searching "zzz", and stopping the server
+- [x] 4.4 Wire "Clear filters"; verify it resets every filter to its default and the URL returns to `/`
 
 ## 5. Event detail page
 
