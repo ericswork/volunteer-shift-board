@@ -151,6 +151,6 @@ Design choices in the schema:
 
 1. The owner creates the GitHub repo and pushes `main`. They also create the Neon project and its `dev` and `test` branches.
 2. Run `prisma migrate dev` locally against `dev`, then seed `dev`.
-3. Create the Render service pointing at `main` (it migrates `main` during the build), then seed production once from a laptop using the production `DIRECT_URL`.
+3. Create the Render service pointing at `main` (it migrates `main` during the build), then seed production once from a laptop with `npm run db:seed`, temporarily pointing `DATABASE_URL` at production.
 4. Create the Vercel project with `VITE_API_URL` set to the Render URL. Set Render's `CLIENT_ORIGIN` to the Vercel URL.
 5. **Rollback:** Render and Vercel can each redeploy a previous build in one click. The database can always be rebuilt with migrate and seed, since it only holds demo data.

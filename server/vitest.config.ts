@@ -8,5 +8,7 @@ const testEnv = existsSync('.env.test') ? parseEnv(readFileSync('.env.test', 'ut
 export default defineConfig({
   test: {
     env: testEnv,
+    // Test files share one database (and the seed test wipes events), so run them one at a time
+    fileParallelism: false,
   },
 });

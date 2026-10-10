@@ -8,6 +8,7 @@ export default defineConfig({
   schema: 'prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',
+    seed: 'tsx prisma/seed/index.ts',
   },
   // Migrations need the direct connection: Neon's pooler can't hold the locks Prisma Migrate uses
   datasource: {

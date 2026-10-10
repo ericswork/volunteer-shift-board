@@ -30,9 +30,9 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 6. Seed
 
-- [ ] 6.1 Add the pure `seedAnchorDate(seedDay)` helper; verify unit tests for 2026-10-10 → 2026-10-17 and 2026-10-14 → 2026-10-24
-- [ ] 6.2 Write `prisma/seed.ts` and its data file per the `demo-data` spec; verify a test against `test` checks the totals table, the Sort donations roster and its dates, and that no user holds overlapping sign-ups
-- [ ] 6.3 Make the seed re-runnable (delete events and `seeded` users, upsert demo accounts by email); verify two consecutive runs leave identical row counts
+- [x] 6.1 Add the pure `seedAnchorDate(seedDay)` helper; verify unit tests for 2026-10-10 → 2026-10-17 and 2026-10-14 → 2026-10-24
+- [x] 6.2 Write `prisma/seed.ts` and its data file per the `demo-data` spec; verify a test against `test` checks the totals table, the Sort donations roster and its dates, and that no user holds overlapping sign-ups
+- [x] 6.3 Make the seed re-runnable (delete events and `seeded` users, upsert demo accounts by email); verify two consecutive runs leave identical row counts
 
 ## 7. Client setup and tokens
 
@@ -52,7 +52,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 ## 10. Deploy and README
 
 - [ ] 10.1 (owner) Create the Render web service in Singapore (root `server`, build and start commands and health-check path from design.md, environment variables) and check whether free instances offer pre-deploy commands; verify the deploy shows "Live" and `/api/health` returns 200
-- [ ] 10.2 Seed production once from a laptop with the production `DIRECT_URL`; verify the event count with a quick query
+- [ ] 10.2 Seed production once from a laptop with `npm run db:seed`, temporarily pointing `DATABASE_URL` at the production branch; verify the event count with a quick query
 - [ ] 10.3 (owner) Create the Vercel project (root `client`, `VITE_API_URL`, `VITE_APP_TIMEZONE=Asia/Manila`); add `vercel.json` rewrites; set Render's `CLIENT_ORIGIN` to the Vercel URL; verify the live site loads, reloading `/my-shifts` doesn't 404, and the console shows no CORS errors
 - [ ] 10.4 Verify the cold start on the live URLs: after 15+ minutes idle, the site shows the waking-up notice, which clears on its own
 - [ ] 10.5 Start the README with setup steps, environment variables and live URLs; verify a fresh clone can follow it to run both apps locally
