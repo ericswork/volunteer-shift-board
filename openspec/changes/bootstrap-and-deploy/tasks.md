@@ -20,9 +20,9 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 4. Database schema
 
-- [ ] 4.1 Install Prisma 7.10.0 (CLI, client and `@prisma/adapter-pg`, exact pins), add `prisma.config.ts` and `schema.prisma` with the four models and two enums from design.md; verify `npx prisma validate` passes
-- [ ] 4.2 Create the first migration with `--create-only`, append the two CHECK constraints by hand, and apply it to `dev` and `test`; verify with a test that a shift ending before it starts, or with capacity 0, is rejected by the database
-- [ ] 4.3 Add `db/client.ts` (PrismaClient with the pg adapter on `DATABASE_URL`); verify the dev server connects to Neon `dev`
+- [x] 4.1 Install Prisma 7.10.0 (CLI, client and `@prisma/adapter-pg`, exact pins), add `prisma.config.ts` and `schema.prisma` with the four models and two enums from design.md; verify `npx prisma validate` passes
+- [x] 4.2 Create the first migration with `--create-only`, append the two CHECK constraints by hand, and apply it to `dev` and `test`; verify with a test that a shift ending before it starts, or with capacity 0, is rejected by the database
+- [x] 4.3 Add `db/client.ts` (PrismaClient with the pg adapter on `DATABASE_URL`); verify the dev server connects to Neon `dev`
 
 ## 5. Health endpoint
 
