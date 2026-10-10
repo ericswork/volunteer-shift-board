@@ -4,8 +4,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 1. Availability and time helpers (server)
 
-- [ ] 1.1 Add `lib/clock.ts` and the "today" / window helpers in `lib/time.ts`; verify unit tests: with the clock at 2026-10-10 in `APP_TIMEZONE`, today is `2026-10-10`, the `next7` end is `2026-10-17` and the `next30` end is `2026-11-09`
-- [ ] 1.2 Add `services/availability.ts`; verify unit tests for 6/8 → filling, 4/8 → open, 4/4 → full, 14/20 → open, 27/30 → filling, and the 74% / 75% boundary
+- [x] 1.1 Add `lib/clock.ts` and the "today" / window helpers in `lib/time.ts`; verify unit tests: with the clock at 2026-10-10 in `APP_TIMEZONE`, today is `2026-10-10`, the `next7` end is `2026-10-17` and the `next30` end is `2026-11-09`
+- [x] 1.2 Add `services/availability.ts`; verify unit tests for 6/8 → filling, 4/8 → open, 4/4 → full, 14/20 → open, 27/30 → filling, and the 74% / 75% boundary
 
 ## 2. Events API
 

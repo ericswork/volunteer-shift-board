@@ -1,3 +1,20 @@
+import { getEnv } from '../config/env.js';
+import * as clock from './clock.js';
+
+export type Timeframe = 'next7' | 'next30' | 'all';
+
+const TIMEFRAME_DAYS: Record<Exclude<Timeframe, 'all'>, number> = { next7: 7, next30: 30 };
+
+export function appToday(): string {
+  return dateInZone(clock.now(), getEnv().APP_TIMEZONE);
+}
+
+// Inclusive range of calendar dates; 'all' has no end
+export function timeframeDates(timeframe: Timeframe, today: string): { from: string; to?: string } {
+  if (timeframe === 'all') return { from: today };
+  return { from: today, to: addDays(today, TIMEFRAME_DAYS[timeframe]) };
+}
+
 // Calendar dates are 'YYYY-MM-DD' strings. Arithmetic runs at UTC midnight so no time zone can shift the day.
 export function addDays(date: string, days: number): string {
   const d = new Date(`${date}T00:00:00Z`);
