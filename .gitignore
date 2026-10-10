@@ -1,0 +1,20 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+*.log
+server/src/generated/
+
+.env
+.env.*
+!.env.example
+
+.vercel/
+.DS_Store
+.idea/
+.vscode/
+.claude/settings.local.json
+
+# Private working files; kept locally as the design source of truth
+docs/PROMPT.md
+docs/design/

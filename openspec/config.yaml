@@ -1,0 +1,28 @@
+schema: spec-driven
+
+# Project context: constraints that guide every OpenSpec artifact.
+context: |
+  Portfolio project for a volunteer web developer application. Hard deadline: two days from 2026-10-10. Prefer the smallest design that meets the spec.
+  The owner reviews every change and must be able to explain it, so each non-obvious choice in design.md names the alternative and why it lost.
+  Design source of truth: docs/design/tokens.md (colors, type, spacing, component states, accessibility, seed data). The PDF in docs/design shows layout only; tokens.md wins on conflict.
+  Stack: React + Vite + TypeScript, Tailwind CSS v4, shadcn/ui only for Dialog, Tabs and toasts, TanStack Query, React Hook Form + Zod, React Router. Express 5 + TypeScript in layers (routes -> controllers -> services -> data), Zod request validation, Prisma ORM 7, Postgres on Neon. Firebase Auth proves identity only; roles live in the app database.
+  Hosting is free tier only: client on Vercel Hobby, API on Render free web service (sleeps after 15 min idle, about 1 min cold start), database on Neon free. Render and Neon both run in Singapore.
+  Events take place in Asia/Manila (UTC+8, no daylight saving). It is the single app time zone for "today", admin-entered times and all display.
+  Business rules are enforced on the server. The UI mirrors them for usability but is never the only guard.
+  Out of scope: editing or deleting events and shifts, email or notifications, waitlists, pagination, multiple organizations, per-event time zones.
+
+rules:
+  specs:
+    - Give the HTTP method, path, status codes and error codes for every API behavior
+  design:
+    - For each decision, name the alternative considered and why it was rejected
+  tasks:
+    - Each numbered group is one reviewable commit; keep groups small enough to review in one sitting
+    - Mark tasks only the owner can do (account sign-ups, dashboard settings, secrets) with "(owner)"
+    - End every change with a task that deploys it and verifies it on the live URLs
+
+operations:
+  apply:
+    guidance:
+      - Implement one numbered task group at a time, then stop, summarise what changed and why, and wait for the owner's review before committing or starting the next group
+      - Keep code comments minimal; only explain non-obvious reasons, never restate what the code does
