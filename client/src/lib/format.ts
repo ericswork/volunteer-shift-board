@@ -22,9 +22,15 @@ export function formatTime(instant: string): string {
   return normalizeSpaces(timeFormat.format(new Date(instant)));
 }
 
-const isoDateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: APP_TIMEZONE });
+const isoDateFormat = new Intl.DateTimeFormat('en-CA', {
+  timeZone: APP_TIMEZONE,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
 
-// Today in the app time zone as 'YYYY-MM-DD' (the en-CA locale writes dates that way)
+// Today in the app time zone as 'YYYY-MM-DD' (the en-CA locale puts the parts in that order). The
+// form compares dates as text, so the zero padding is spelled out instead of left to locale data.
 export function appToday(): string {
   return isoDateFormat.format(new Date());
 }
