@@ -29,3 +29,12 @@ export function findEvents({ from, to, cause, q }: EventSearch, db = prisma) {
 export function findEventById(id: string, db = prisma) {
   return db.event.findUnique({ where: { id }, include: { shifts: shiftsWithSignupCount } });
 }
+
+// Unlike findEvents, this keeps events that have no shifts yet, so admins can staff them
+export function findEventsFrom(from: string, db = prisma) {
+  return db.event.findMany({
+    where: { date: { gte: new Date(from) } },
+    orderBy: [{ date: 'asc' }, { title: 'asc' }],
+    include: { shifts: shiftsWithSignupCount },
+  });
+}

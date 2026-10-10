@@ -4,7 +4,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 1. Admin events list (server)
 
-- [ ] 1.1 Add `GET /api/admin/events` (events dated today or later, including those with no shifts, sorted by date, with `shiftCount`, `signedUpCount`, `capacity` and `status`, which is `null` without shifts); verify integration tests as the demo admin with the clock pinned: the six seeded events with shift counts 3, 2, 2, 2, 1, 2 and sign-ups 14/20, 27/30, 4/12, 16/16, 3/8, 8/10; an inserted event with no shifts is listed with `status: null`; a past event is not listed
+- [x] 1.1 Add `GET /api/admin/events` (events dated today or later, including those with no shifts, sorted by date, with `shiftCount`, `signedUpCount`, `capacity` and `status`, which is `null` without shifts); verify integration tests as the demo admin with the clock pinned: the six seeded events with shift counts 3, 2, 2, 2, 1, 2 and sign-ups 14/20, 27/30, 4/12, 16/16, 3/8, 8/10; an inserted event with no shifts is listed with `status: null`; a past event is not listed
 
 ## 2. Roster and removal (server)
 
