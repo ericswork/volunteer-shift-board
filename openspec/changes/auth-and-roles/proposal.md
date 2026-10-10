@@ -24,7 +24,7 @@ Sign-ups belong to a person, and the admin dashboard must be off-limits to volun
 
 ## Impact
 
-- New dependencies: `firebase` (client) and `firebase-admin` (server, used only to verify ID tokens; needs just the project id at runtime).
-- New owner setup: a Firebase project with Email/Password sign-in enabled, the Vercel domain added to its authorized domains, and the two demo accounts created by a one-off script.
-- New environment variables: client `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`; server `FIREBASE_PROJECT_ID`.
+- New dependencies: `firebase` (client) and `jose` (server). The server verifies Firebase ID tokens against Google's published certificates, as Firebase documents for third-party JWT libraries, so no service account is needed. `firebase-admin` was dropped because its docs require a service account even to verify tokens.
+- New owner setup: a Firebase project with Email/Password sign-in enabled, the Vercel domain added to its authorized domains, and the two demo accounts created by hand in the Firebase console.
+- New environment variables: client `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_DEMO_VOLUNTEER_PASSWORD`, `VITE_DEMO_ADMIN_PASSWORD`; server `FIREBASE_PROJECT_ID`.
 - API: `GET /api/me`. Every later authenticated endpoint uses the middleware added here.
