@@ -36,9 +36,9 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 7. Client setup and tokens
 
-- [ ] 7.1 Initialise `client/` (Vite React TypeScript, Tailwind v4, React Router, TanStack Query, `@fontsource/figtree`) with `client/.env.example`; verify `npm run build` succeeds
-- [ ] 7.2 Add the tokens to `styles.css` under `@theme`, using the tokens.md names; verify on a scratch page that the base and status colors match the hex values
-- [ ] 7.3 Add `lib/api.ts` (base URL, JSON, `ApiError` with `code` and `message`) and `lib/format.ts` (dates and times in `VITE_APP_TIMEZONE`); verify a unit test that formats a seeded instant as "Sat, Oct 17" and "9:00 AM" whatever the laptop's time zone
+- [x] 7.1 Initialise `client/` (Vite React TypeScript, Tailwind v4, React Router, TanStack Query, `@fontsource-variable/figtree`) with `client/.env.example`; verify `npm run build` succeeds
+- [x] 7.2 Add the tokens to `styles.css` under `@theme`, using the tokens.md names; verify on a scratch page that the base and status colors match the hex values
+- [x] 7.3 Add `lib/api.ts` (base URL, JSON, `ApiError` with `code` and `message`) and `lib/format.ts` (dates and times in `VITE_APP_TIMEZONE`); verify unit tests that format a seeded instant as "Sat, Oct 17" and "9:00 AM" with the test runner set to another time zone, and that `apiFetch` turns error envelopes, HTML pages and network failures into `ApiError`s
 
 ## 8. Layout and routes
 

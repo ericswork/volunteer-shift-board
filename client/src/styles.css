@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/figtree';
+
+/* Values from docs/design/tokens.md; names match it so classes read like the design file */
+@theme {
+  --font-sans: 'Figtree Variable', system-ui, sans-serif;
+
+  --color-bg: #f3f7f6;
+  --color-surface: #ffffff;
+  --color-border: #dde6e4;
+  --color-divider: #e3eae9;
+  --color-text: #14302e;
+  --color-text-muted: #3f5553;
+  --color-primary: #0f766e;
+  --color-primary-ink: #0b5f58;
+  --color-primary-tint: #e3f2f0;
+  --color-row-selected: #eaf5f3;
+  --color-input-border: #7c9390;
+  --color-dashed: #b7c7c4;
+  --color-disabled-bg: #eef2f1;
+  --color-disabled-border: #c9d3d2;
+  --color-disabled-text: #4b5a58;
+  --color-error-text: #9b1c1c;
+  --color-error-border: #b42318;
+  --color-success-bg: #dcf1ec;
+  --color-success-border: #9acfc6;
+  --color-success-text: #0b4f49;
+
+  --color-status-open-bg: #dcf1ec;
+  --color-status-open-text: #0b5f58;
+  --color-status-open-bar: #0f766e;
+  --color-status-filling-bg: #fdebc8;
+  --color-status-filling-text: #8a3b07;
+  --color-status-filling-bar: #d97706;
+  --color-status-full-bg: #e6eaea;
+  --color-status-full-text: #3f4b4a;
+  --color-status-full-bar: #6b7b79;
+
+  --radius-card: 16px;
+  --radius-control: 10px;
+
+  --container-page: 1120px;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}

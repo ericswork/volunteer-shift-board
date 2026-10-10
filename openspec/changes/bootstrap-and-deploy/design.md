@@ -114,7 +114,7 @@ Design choices in the schema:
 
 ### 7. Styling and fonts
 - Tailwind v4 tokens live in `client/src/styles.css` under `@theme`, with the same names as tokens.md (`bg`, `surface`, `primary`, `primary-ink`, `status-filling-bg`, …). Classes then read like the design file, for example `bg-surface text-primary-ink`.
-- Figtree is self-hosted via `@fontsource/figtree`. That's one less third-party request and no layout shift.
+- Figtree is self-hosted via `@fontsource-variable/figtree`: one variable-weight file covers 400–700. That's one less third-party request and no layout shift.
 - shadcn/ui gets initialised when the first change needs a Dialog, Tabs or toast, not now.
 
 ### 8. Hosting setup
