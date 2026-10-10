@@ -236,6 +236,13 @@ curl -i "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/me"
 
 Returns `200`, or `401 UNAUTHENTICATED` without a valid token (as in this example).
 
+## Accessibility (checked 2026-10-11)
+
+Measured on the local app, signed in as each role where a screen needs it:
+
+- **axe-core 4.13:** no violations on the events list, event detail (signed out and as a volunteer), My shifts and Admin, including the Add a shift form's error state and the New event dialog, at 1280px and 390px. Rerun it with `npm --prefix client run a11y` while `npm run dev` is running; it exits with an error on any serious or critical violation.
+- **Lighthouse 13.5 accessibility score:** 100 on all four screens, with both the mobile and desktop presets.
+
 ## Free-tier notes (checked 2026-10-10)
 
 - **Render free web service:** sleeps after 15 minutes idle and takes about a minute to wake; 750 instance hours a month.

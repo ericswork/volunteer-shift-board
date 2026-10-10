@@ -9,7 +9,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 2. Accessibility pass
 
-- [ ] 2.1 Add `axe-core` as a client dev dependency and a scripted check that runs it on the events list, event detail, My shifts and Admin screens (signed in as needed), then run Lighthouse on the same screens; fix every `serious` and `critical` finding; verify axe reports none on all four screens and Lighthouse accessibility is at least 95 on each, and record the scores
+- [x] 2.1 Add `axe-core` as a client dev dependency and a scripted check that runs it on the events list, event detail, My shifts and Admin screens (signed in as needed), then run Lighthouse on the same screens; fix every `serious` and `critical` finding; verify axe reports none on all four screens and Lighthouse accessibility is at least 95 on each, and record the scores
 
 ## 3. State sweep
 

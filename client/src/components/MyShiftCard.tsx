@@ -19,10 +19,10 @@ export function MyShiftCard({ signup, upcoming }: { signup: MySignup; upcoming: 
           <span className="text-[28px] leading-none font-bold">{day}</span>
         </div>
         <div className="min-w-0">
-          <h3 className="text-xl leading-[1.3] font-bold">
+          <h2 className="text-xl leading-[1.3] font-bold">
             {shift.name}
             <span className="sr-only">, {formatDate(shift.startsAt)}</span>
-          </h3>
+          </h2>
           <Link
             to={`/events/${event.id}`}
             className="mt-1 inline-block text-[17px] text-text-muted underline decoration-divider underline-offset-4 hover:decoration-current"
