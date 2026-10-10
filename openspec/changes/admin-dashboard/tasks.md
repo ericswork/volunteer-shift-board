@@ -21,7 +21,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 5. Admin page and events table (client)
 
-- [ ] 5.1 Replace the `/admin` placeholder with the heading, subtitle and two-column layout, plus the Events table (title with cause below, date, shifts, "14 / 20", status pill or "No shifts yet", "Manage" button) inside a horizontally scrolling wrapper; selecting a row highlights it with `aria-current="true"`, and the first event is selected on load; verify in the browser against PDF page 3 at 1280px (Food Pantry shows "Spots open"), and at 390px that only the table scrolls sideways
+- [x] 5.1 Replace the `/admin` placeholder with the heading, subtitle and two-column layout, plus the Events table (title with cause below, date, shifts, "14 / 20", status pill or "No shifts yet", "Manage" button) inside a horizontally scrolling wrapper; selecting a row highlights it with `aria-current="true"`, and the first event is selected on load; verify in the browser against PDF page 3 at 1280px (Food Pantry shows "Spots open"), and at 390px that only the table scrolls sideways
 
 ## 6. Roster panel (client)
 

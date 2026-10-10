@@ -1,13 +1,13 @@
 import { createBrowserRouter } from 'react-router';
 import { AppLayout } from './components/layout/AppLayout';
 import { RequireAdmin, RequireAuth } from './components/RouteGuards';
+import { AdminPage } from './pages/AdminPage';
 import { CrashFallback } from './pages/CrashFallback';
 import { EventDetailPage } from './pages/EventDetailPage';
 import { EventsPage } from './pages/EventsPage';
 import { LoginPage } from './pages/LoginPage';
 import { MyShiftsPage } from './pages/MyShiftsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
-import { PlaceholderPage } from './pages/PlaceholderPage';
 import { RegisterPage } from './pages/RegisterPage';
 
 export const router = createBrowserRouter([
@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
               { path: 'my-shifts', element: <MyShiftsPage /> },
               {
                 element: <RequireAdmin />,
-                children: [{ path: 'admin', element: <PlaceholderPage title="Manage events" /> }],
+                children: [{ path: 'admin', element: <AdminPage /> }],
               },
             ],
           },
