@@ -5,21 +5,33 @@ Volunteers browse upcoming events and sign up for shifts. Admins create events a
 - **Live demo:** https://lauritzkeans-volunteer-shift-board.vercel.app
 - **API health:** https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/health
 
+## Demo logins
+
+Both accounts are shared on purpose. The quickest way in is the **Continue as demo volunteer** or **Continue as demo admin** button on the login page.
+
+| Account | Email | Password | What it can do |
+|---|---|---|---|
+| Demo volunteer | `demo.volunteer@example.com` | `123@Seaboo` | Browse events, sign up for shifts and manage them under My shifts. Starts with three upcoming shifts. |
+| Demo admin | `demo.admin@example.com` | `123@Seaboo` | Everything a volunteer can, plus the Admin page: create events and shifts, see who signed up and remove volunteers. |
+
+You can also create your own account on the sign-up page; new accounts are always volunteers. Only admins see the Admin link, and the API refuses admin requests from everyone else whatever the page shows. Shift sign-ups, My shifts and the Admin page are being built next (see Status), so for now every account can sign in and browse.
+
 > The API runs on Render's free tier, which sleeps after 15 minutes without traffic. The first visit after a quiet spell shows a "Waking up the server…" notice for up to a minute.
 
 ## Status
 
 Built one [OpenSpec](https://github.com/Fission-AI/OpenSpec) change at a time; the specs live in [`openspec/changes/`](openspec/changes/).
 
-- Done: project setup, database schema, demo data, page layout, cold-start handling, deployment, browsing and filtering events
-- Next: sign-in with demo logins, shift sign-ups, the admin dashboard
+- Done: project setup, database schema, demo data, page layout, cold-start handling, deployment, browsing and filtering events, sign-in with roles and demo logins
+- Next: shift sign-ups, the admin dashboard
 
 ## Tech stack
 
 | Layer | Choice |
 |---|---|
-| Client | React 19, Vite, TypeScript, Tailwind CSS v4, TanStack Query, React Router |
+| Client | React 19, Vite, TypeScript, Tailwind CSS v4, TanStack Query, React Router, React Hook Form |
 | API | Express 5, TypeScript, Zod, in layers: routes → controllers → services → data |
+| Sign-in | Firebase Authentication (email and password); the API verifies its ID tokens with `jose`, and roles live in the app database |
 | Database | PostgreSQL on Neon, Prisma ORM 7 |
 | Hosting | Vercel (client), Render (API), Neon (database), all on free tiers |
 | Tests | Vitest and Supertest |
@@ -43,7 +55,8 @@ You need Node 24 (`nvm use` reads `.nvmrc`) and a Neon project with `dev` and `t
    npm --prefix server install
    npm --prefix client install
    ```
-2. Copy `server/.env.example` to `server/.env` (Neon `dev` branch) and to `server/.env.test` (Neon `test` branch), then fill in the connection strings.
+2. Copy `server/.env.example` to `server/.env` (Neon `dev` branch) and to `server/.env.test` (Neon `test` branch), then fill in the connection strings and your Firebase project id.
+   Copy `client/.env.example` to `client/.env` and fill in the Firebase web app config (Firebase console → Project settings → Your apps) and the two demo passwords.
 3. Prepare the databases:
    ```
    cd server
@@ -54,8 +67,6 @@ You need Node 24 (`nvm use` reads `.nvmrc`) and a Neon project with `dev` and `t
    ```
 4. Start both apps with `npm run dev`: the client runs on http://localhost:5173 and the API on http://localhost:4000.
 5. Run every test with `npm test`. Server tests use the Neon `test` branch, never `dev`.
-
-The client needs no `.env` locally: it defaults to http://localhost:4000 and Asia/Manila.
 
 ## Environment variables
 
@@ -68,13 +79,16 @@ The client needs no `.env` locally: it defaults to http://localhost:4000 and Asi
 | `CLIENT_ORIGIN` | The client URL allowed to call the API (CORS) |
 | `APP_TIMEZONE` | Time zone for "today", admin-entered times and display. Default `Asia/Manila` |
 | `PORT` | API port. Default `4000`; Render sets its own |
+| `FIREBASE_PROJECT_ID` | The Firebase project whose ID tokens the API accepts |
 
-**Client** (`client/.env`, optional locally)
+**Client** (`client/.env`)
 
 | Variable | Purpose |
 |---|---|
-| `VITE_API_URL` | API base URL |
-| `VITE_APP_TIMEZONE` | Display time zone; must match the server's `APP_TIMEZONE` |
+| `VITE_API_URL` | API base URL. Default http://localhost:4000 |
+| `VITE_APP_TIMEZONE` | Display time zone; must match the server's `APP_TIMEZONE`. Default `Asia/Manila` |
+| `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID` | Firebase web app config |
+| `VITE_DEMO_VOLUNTEER_PASSWORD`, `VITE_DEMO_ADMIN_PASSWORD` | Passwords for the one-click demo logins |
 
 Every `VITE_` variable is bundled into the browser code, so none of them may hold a secret.
 
@@ -88,7 +102,8 @@ Every `VITE_` variable is bundled into the browser code, so none of them may hol
   ```
   Render also runs `prisma migrate deploy` on every build.
 - **API (Render):** [`render.yaml`](render.yaml) defines the service as a Blueprint: free plan, Singapore, build and start commands, and the health check. In Render, choose **New → Blueprint** and pick this repo. It asks once for `DATABASE_URL` and `DIRECT_URL`.
-- **Client (Vercel):** import the repo with Root Directory `client` (Vite preset), and set `VITE_API_URL` to the Render URL and `VITE_APP_TIMEZONE` to `Asia/Manila`. [`client/vercel.json`](client/vercel.json) serves `index.html` for every path, so deep links survive a reload.
+- **Sign-in (Firebase):** a Firebase project with Email/Password sign-in enabled, the Vercel domain added under Authentication → Settings → Authorized domains, and the two demo users created by hand under Authentication → Users. The API needs no service account: it checks tokens against Google's public certificates.
+- **Client (Vercel):** import the repo with Root Directory `client` (Vite preset), and set `VITE_API_URL` to the Render URL, `VITE_APP_TIMEZONE` to `Asia/Manila`, and the five Firebase and demo-login variables from `client/.env.example`. [`client/vercel.json`](client/vercel.json) serves `index.html` for every path, so deep links survive a reload.
 
 Pushing to `main` redeploys both. Vercel preview deployments can't call the API, because CORS only allows the production client URL.
 
@@ -105,6 +120,8 @@ Base URL: `https://lauritzkeans-volunteer-shift-board-api.onrender.com`. Every e
   }
 }
 ```
+
+Endpoints that need a user take a Firebase ID token as `Authorization: Bearer <token>`. Without a valid token they return `401 UNAUTHENTICATED`, and everything under `/api/admin` returns `403 FORBIDDEN` to anyone who isn't an admin. Roles come from the app database, never from the token.
 
 Every event and shift carries a `status` computed on the server: `full` when no spots are left, `filling` when 75% or more are taken, otherwise `open`. Times are UTC instants; dates are `YYYY-MM-DD` in the app time zone (Asia/Manila).
 
@@ -181,6 +198,16 @@ Returns `200`, or `404 NOT_FOUND` for an unknown or malformed id:
 curl -i "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/events/not-a-real-id"
 ```
 
+### `GET /api/me`
+
+The signed-in user, as the app database knows them: `id`, `name`, `email`, `role` (`volunteer` or `admin`) and `initials`. On the first request, the API links the Firebase account to the user with the same email, or creates a new volunteer.
+
+```
+curl -i "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/me"
+```
+
+Returns `200`, or `401 UNAUTHENTICATED` without a valid token (as in this example).
+
 ## Free-tier notes (checked 2026-10-10)
 
 - **Render free web service:** sleeps after 15 minutes idle and takes about a minute to wake; 750 instance hours a month.
@@ -190,3 +217,5 @@ curl -i "https://lauritzkeans-volunteer-shift-board-api.onrender.com/api/events/
 ## Known issues
 
 - `npm audit` in `server/` reports high-severity advisories in `deepmerge-ts` and `mysql2`, which the Prisma command-line tool pulls in. Neither touches untrusted input here: one merges Prisma's own config file, the other is a MySQL driver this project never loads. The only fix offered is a downgrade to Prisma 6.
+- After signing out, a copied ID token keeps working until it expires (at most an hour). Checking for revoked tokens needs Firebase's Admin SDK and a service account on the API server, which this project deliberately avoids.
+- `npm audit` in `client/` reports high-severity advisories in `@grpc/grpc-js`, pulled in by Firebase's Firestore package. The app imports only Firebase's `app` and `auth` modules, and the built bundle contains no gRPC code.

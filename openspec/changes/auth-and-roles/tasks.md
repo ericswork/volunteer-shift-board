@@ -41,8 +41,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 ## 9. Deploy and verify
 
 - [x] 9.1 (owner) Add the five `VITE_` variables in Vercel and confirm `FIREBASE_PROJECT_ID` reached the Render service before pushing; verify both appear in each dashboard
-- [ ] 9.2 Push and verify on the live URLs: both demo buttons sign in, the Admin link shows only for the demo admin, and `curl` on `/api/me` without a token returns 401
-- [ ] 9.3 Add a "Demo logins" section to the README (emails, passwords, what each role can do) and update the local setup steps for `client/.env`; verify the documented credentials sign in on the live site
+- [x] 9.2 Push and verify on the live URLs: both demo buttons sign in, the Admin link shows only for the demo admin, and `curl` on `/api/me` without a token returns 401
+- [x] 9.3 Add a "Demo logins" section to the README (emails, passwords, what each role can do) and update the local setup steps for `client/.env`; verify the documented credentials sign in on the live site
 
 ## Workflow follow-up
 
