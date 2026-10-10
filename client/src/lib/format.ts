@@ -22,6 +22,19 @@ export function formatTime(instant: string): string {
   return normalizeSpaces(timeFormat.format(new Date(instant)));
 }
 
+const dateBlockFormat = new Intl.DateTimeFormat('en-US', {
+  timeZone: APP_TIMEZONE,
+  weekday: 'short',
+  day: 'numeric',
+});
+
+// The calendar tile on My shifts: { weekday: "SAT", day: "17" } in the app time zone
+export function dateBlock(instant: string): { weekday: string; day: string } {
+  const parts = dateBlockFormat.formatToParts(new Date(instant));
+  const part = (type: string) => parts.find((p) => p.type === type)?.value ?? '';
+  return { weekday: part('weekday').toUpperCase(), day: part('day') };
+}
+
 // "8:00 – 11:00 AM" when both ends share AM/PM, otherwise "10:30 AM – 12:00 PM"
 export function formatTimeRange(startsAt: string, endsAt: string): string {
   const start = formatTime(startsAt);

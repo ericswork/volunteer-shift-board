@@ -2,6 +2,17 @@ import { useMutation, useQueryClient, type QueryClient } from '@tanstack/react-q
 import { toast } from 'sonner';
 import { apiFetch, ApiError } from './api';
 
+export type MySignup = {
+  signupId: string;
+  canCancel: boolean;
+  shift: { id: string; name: string; startsAt: string; endsAt: string };
+  event: { id: string; title: string; location: string };
+};
+
+export function fetchMySignups(when: 'upcoming' | 'past') {
+  return apiFetch<{ signups: MySignup[]; total: number }>(`/api/me/signups?when=${when}`);
+}
+
 // Sign-ups change counts on the list, the event page and My shifts, so all three refetch
 function refreshAfterSignupChange(queryClient: QueryClient) {
   return Promise.all([

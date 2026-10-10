@@ -31,8 +31,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 7. My shifts page (client)
 
-- [ ] 7.1 Build `/my-shifts`: the 30px heading, the summary line ("1 upcoming shift." for one), the Upcoming / Past tabs, the shift cards (date block, shift name, event link, time and location with icons), the empty states and the cancellation note, in a single column no wider than 640px; verify in the browser against PDF page 4 at 390px (no sideways scroll, buttons at least 44px tall), that the right arrow key moves from Upcoming to Past, and that a new volunteer sees "0 upcoming shifts…" with a "Browse events" link
-- [ ] 7.2 Add "Cancel sign-up" on upcoming cards with the shared dialog, and "Cancellation closed (less than 24 hours to go)" when `canCancel` is false; verify in the browser that cancelling Tech help desk removes its card, changes the summary to "2 upcoming shifts…" and shows a toast
+- [x] 7.1 Build `/my-shifts`: the 30px heading, the summary line ("1 upcoming shift." for one), the Upcoming / Past tabs, the shift cards (date block, shift name, event link, time and location with icons), the empty states and the cancellation note, in a single column no wider than 640px; verify in the browser against PDF page 4 at 390px (no sideways scroll, buttons at least 44px tall), that the right arrow key moves from Upcoming to Past, and that a new volunteer sees "0 upcoming shifts…" with a "Browse events" link
+- [x] 7.2 Add "Cancel sign-up" on upcoming cards with the shared dialog, and "Cancellation closed (less than 24 hours to go)" when `canCancel` is false; verify in the browser that cancelling Tech help desk removes its card, changes the summary to "2 upcoming shifts…" and shows a toast
 
 ## 8. Deploy and verify
 

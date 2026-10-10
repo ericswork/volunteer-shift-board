@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDate, formatTime, formatTimeRange, spotsLabel } from '../src/lib/format';
+import { dateBlock, formatDate, formatTime, formatTimeRange, spotsLabel } from '../src/lib/format';
 
 // Sort donations in the seed: 9:00 AM on Saturday 2026-10-17 in Manila
 const sortDonationsStart = '2026-10-17T01:00:00.000Z';
@@ -41,5 +41,15 @@ describe('spotsLabel', () => {
 
   it('counts the spots taken when full', () => {
     expect(spotsLabel({ capacity: 16, signedUpCount: 16, spotsLeft: 0 })).toBe('Full · 16 of 16 taken');
+  });
+});
+
+describe('dateBlock', () => {
+  it('splits a shift start into the weekday and day number', () => {
+    expect(dateBlock('2026-10-17T02:30:00.000Z')).toEqual({ weekday: 'SAT', day: '17' });
+  });
+
+  it('uses the Manila day even when UTC is still on the day before', () => {
+    expect(dateBlock('2026-10-17T17:00:00.000Z')).toEqual({ weekday: 'SUN', day: '18' });
   });
 });

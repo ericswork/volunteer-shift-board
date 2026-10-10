@@ -13,7 +13,7 @@ function TabsList({ className, ...props }: ComponentProps<typeof TabsPrimitive.L
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
-      className={cn('flex gap-1 rounded-control border border-border bg-surface p-1', className)}
+      className={cn('flex gap-1 rounded-card bg-divider p-1', className)}
       {...props}
     />
   );
@@ -24,7 +24,7 @@ function TabsTrigger({ className, ...props }: ComponentProps<typeof TabsPrimitiv
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        'min-h-11 flex-1 rounded-[8px] px-4 font-semibold text-text-muted hover:text-text data-[state=active]:bg-primary-tint data-[state=active]:text-primary-ink',
+        'min-h-11 flex-1 rounded-control px-4 font-semibold text-text data-[state=active]:bg-surface data-[state=active]:text-primary-ink data-[state=active]:shadow-sm',
         className,
       )}
       {...props}
