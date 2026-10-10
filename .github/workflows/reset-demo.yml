@@ -44,13 +44,18 @@ jobs:
           FIREBASE_PROJECT_ID: volunteer-shift-board
           APP_TIMEZONE: Asia/Manila
 
-      # Kept out of package.json: Render would otherwise install it on every build for nothing
+      # The password steps run even when the seed failed: the passwords don't depend on the data.
+      # firebase-admin stays out of package.json, or Render would install it on every build.
       - name: Install firebase-admin for this job only
+        if: ${{ !cancelled() }}
         run: npm install --no-save firebase-admin@14.5.0
 
-      - name: Reset the demo passwords
+      - name: Reset the demo passwords if they were changed
+        if: ${{ !cancelled() }}
         run: node scripts/reset-demo-passwords.mjs
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # The public web API key the client also uses, for trying the published passwords
+          FIREBASE_WEB_API_KEY: ${{ vars.FIREBASE_WEB_API_KEY }}
           DEMO_VOLUNTEER_PASSWORD: ${{ vars.DEMO_VOLUNTEER_PASSWORD }}
           DEMO_ADMIN_PASSWORD: ${{ vars.DEMO_ADMIN_PASSWORD }}
