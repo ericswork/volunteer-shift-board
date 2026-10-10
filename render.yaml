@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: lauritzkeans-volunteer-shift-board-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: server
+    # Migrations run in the build: Render's pre-deploy command isn't guaranteed on free instances
+    buildCommand: npm ci --include=dev && npx prisma migrate deploy && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: APP_TIMEZONE
+        value: Asia/Manila
+      - key: CLIENT_ORIGIN
+        value: https://lauritzkeans-volunteer-shift-board.vercel.app
+      # Secrets: Render asks for these once, when the Blueprint is first applied
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false

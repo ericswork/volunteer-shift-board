@@ -52,7 +52,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 ## 10. Deploy and README
 
 - [ ] 10.1 (owner) Create the Render web service in Singapore (root `server`, build and start commands and health-check path from design.md, environment variables) and check whether free instances offer pre-deploy commands; verify the deploy shows "Live" and `/api/health` returns 200
-- [ ] 10.2 Seed production once from a laptop with `npm run db:seed`, temporarily pointing `DATABASE_URL` at the production branch; verify the event count with a quick query
+- [x] 10.2 Migrate and seed production once from a laptop with `ENV_FILE=.env.production` (a git-ignored file holding the production connection strings); verify the event count with a quick query
 - [ ] 10.3 (owner) Create the Vercel project (root `client`, `VITE_API_URL`, `VITE_APP_TIMEZONE=Asia/Manila`); add `vercel.json` rewrites; set Render's `CLIENT_ORIGIN` to the Vercel URL; verify the live site loads, reloading `/my-shifts` doesn't 404, and the console shows no CORS errors
 - [ ] 10.4 Verify the cold start on the live URLs: after 15+ minutes idle, the site shows the waking-up notice, which clears on its own
 - [ ] 10.5 Start the README with setup steps, environment variables and live URLs; verify a fresh clone can follow it to run both apps locally

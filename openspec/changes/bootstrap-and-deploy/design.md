@@ -126,9 +126,9 @@ Design choices in the schema:
   - `dev` for local development,
   - `test` for automated tests.
 - **Render:** a Web Service with root directory `server`.
-  - Build command: `npm ci --include=dev && npx prisma generate && npx prisma migrate deploy && npm run build`.
-  - Start command: `node dist/server.js`.
-  - Health check path: `/api/health`. Node 24 LTS, set via `.nvmrc`.
+  - Defined as code in `render.yaml` (a Render Blueprint). Build command: `npm ci --include=dev && npx prisma migrate deploy && npm run build`; `npm run build` runs `prisma generate` itself.
+  - Start command: `npm start` (`node dist/server.js`).
+  - Health check path: `/api/health`. Node 24 LTS, set explicitly by `NODE_VERSION` in `render.yaml`, because Render's docs don't say whether `.nvmrc` is read when a service has its own root directory.
   - Migrations run during the build because Render's pre-deploy command isn't offered on free instances. Confirm this during setup.
 - **Vercel:** root directory `client`, Vite preset. `vercel.json` rewrites every path to `/index.html` so client-side routes survive a reload.
 - **Cross-origin calls:** the browser calls Render directly (`VITE_API_URL`), and the server allowlists `CLIENT_ORIGIN`. Auth will use a Bearer header, not cookies, so CORS doesn't need credentials.
@@ -153,6 +153,6 @@ Design choices in the schema:
 
 1. The owner creates the GitHub repo and pushes `main`. They also create the Neon project and its `dev` and `test` branches.
 2. Run `prisma migrate dev` locally against `dev`, then seed `dev`.
-3. Create the Render service pointing at `main` (it migrates `main` during the build), then seed production once from a laptop with `npm run db:seed`, temporarily pointing `DATABASE_URL` at production.
+3. Create the Render service pointing at `main` (it migrates `main` during the build), then migrate and seed production once from a laptop with `ENV_FILE=.env.production` (a git-ignored file holding the production connection strings).
 4. Create the Vercel project with `VITE_API_URL` set to the Render URL. Set Render's `CLIENT_ORIGIN` to the Vercel URL.
 5. **Rollback:** Render and Vercel can each redeploy a previous build in one click. The database can always be rebuilt with migrate and seed, since it only holds demo data.
