@@ -13,7 +13,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 3. Add shift endpoint (server)
 
-- [ ] 3.1 Add `schemas/admin.ts` with `createShiftBody` (name 1–80, `HH:mm` times with end after start, capacity 1–200) and `POST /api/admin/events/:id/shifts`, converting times with `zonedTimeToUtc` on the event's date and refusing past events; verify tests: "Greet and check in" 08:30–09:00 capacity 2 on Food Pantry → `201`, then 4 shifts and capacity 22 in the admin list; 10:30–09:30 → `400` with an `endTime` detail "End time must be after the start time."; a past event → `400` with an `eventId` detail "Shifts can only be added to upcoming events."; capacity 0 and an empty name → one detail each; an unknown event → `404`
+- [x] 3.1 Add `schemas/admin.ts` with `createShiftBody` (name 1–80, `HH:mm` times with end after start, capacity 1–200) and `POST /api/admin/events/:id/shifts`, converting times with `zonedTimeToUtc` on the event's date and refusing past events; verify tests: "Greet and check in" 08:30–09:00 capacity 2 on Food Pantry → `201`, then 4 shifts and capacity 22 in the admin list; 10:30–09:30 → `400` with an `endTime` detail "End time must be after the start time."; a past event → `400` with an `eventId` detail "Shifts can only be added to upcoming events."; capacity 0 and an empty name → one detail each; an unknown event → `404`
 
 ## 4. Create event endpoint (server; second cut if behind)
 

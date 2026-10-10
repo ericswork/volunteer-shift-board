@@ -38,3 +38,14 @@ export function findEventsFrom(from: string, db = prisma) {
     include: { shifts: shiftsWithSignupCount },
   });
 }
+
+export function findEventDate(id: string, db = prisma) {
+  return db.event.findUnique({ where: { id }, select: { date: true } });
+}
+
+export function createShift(
+  data: { eventId: string; name: string; startsAt: Date; endsAt: Date; capacity: number },
+  db = prisma,
+) {
+  return db.shift.create({ data });
+}

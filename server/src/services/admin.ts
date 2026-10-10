@@ -1,9 +1,11 @@
 import { z } from 'zod';
 import * as eventsData from '../data/events.js';
 import * as signupsData from '../data/signups.js';
-import { notFound } from '../lib/errors.js';
+import { getEnv } from '../config/env.js';
+import { notFound, validationError } from '../lib/errors.js';
 import { initials } from '../lib/initials.js';
-import { appToday } from '../lib/time.js';
+import { appToday, zonedTimeToUtc } from '../lib/time.js';
+import type { CreateShiftBody } from '../schemas/admin.js';
 import { availability } from './availability.js';
 
 export async function listAdminEvents() {
@@ -54,4 +56,35 @@ export async function getRoster(shiftId: string) {
 export async function removeSignup(signupId: string) {
   const removed = z.uuid().safeParse(signupId).success && (await signupsData.deleteSignup(signupId));
   if (!removed) throw notFound('That sign-up no longer exists.');
+}
+
+export async function createShift(
+  eventId: string,
+  { name, startTime, endTime, capacity }: CreateShiftBody,
+) {
+  const event = z.uuid().safeParse(eventId).success ? await eventsData.findEventDate(eventId) : null;
+  if (!event) throw notFound("We couldn't find that event.");
+
+  const date = event.date.toISOString().slice(0, 10);
+  if (date < appToday()) {
+    throw validationError([
+      { path: 'eventId', message: 'Shifts can only be added to upcoming events.' },
+    ]);
+  }
+
+  const timeZone = getEnv().APP_TIMEZONE;
+  const shift = await eventsData.createShift({
+    eventId,
+    name,
+    startsAt: zonedTimeToUtc(date, startTime, timeZone),
+    endsAt: zonedTimeToUtc(date, endTime, timeZone),
+    capacity,
+  });
+  return {
+    id: shift.id,
+    name: shift.name,
+    startsAt: shift.startsAt,
+    endsAt: shift.endsAt,
+    capacity: shift.capacity,
+  };
 }
