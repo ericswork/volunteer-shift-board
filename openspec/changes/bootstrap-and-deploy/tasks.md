@@ -26,7 +26,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 5. Health endpoint
 
-- [ ] 5.1 Add `GET /api/health` through route → controller → service → data (`SELECT 1`, 10 s timeout); verify with Supertest that it returns 200 `{"status":"ok"}`, and returns 503 `DATABASE_UNAVAILABLE` when the data function is mocked to hang
+- [x] 5.1 Add `GET /api/health` through route → controller → service → data (`SELECT 1`, 10 s timeout); verify with Supertest that it returns 200 `{"status":"ok"}` against the `test` branch and 503 `DATABASE_UNAVAILABLE` when the data function fails, and with a fake-timer unit test that `checkHealth` gives up after exactly 10 s when the data function hangs
 
 ## 6. Seed
 
