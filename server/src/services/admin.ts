@@ -5,7 +5,7 @@ import { getEnv } from '../config/env.js';
 import { notFound, validationError } from '../lib/errors.js';
 import { initials } from '../lib/initials.js';
 import { appToday, zonedTimeToUtc } from '../lib/time.js';
-import type { CreateShiftBody } from '../schemas/admin.js';
+import type { CreateEventBody, CreateShiftBody } from '../schemas/admin.js';
 import { availability } from './availability.js';
 
 export async function listAdminEvents() {
@@ -87,4 +87,9 @@ export async function createShift(
     endsAt: shift.endsAt,
     capacity: shift.capacity,
   };
+}
+
+export async function createEvent({ date, ...fields }: CreateEventBody) {
+  const event = await eventsData.createEvent({ ...fields, date: new Date(date) });
+  return { id: event.id };
 }

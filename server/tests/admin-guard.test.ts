@@ -43,8 +43,8 @@ describe('/api/admin guard', () => {
     expect(res.status).toBe(403);
   });
 
-  it('lets the demo admin through to a 404 while no admin routes exist', async () => {
-    const res = await request(app).post('/api/admin/events').set(asAdmin).send(newEvent);
+  it('lets the demo admin through, so a missing admin route answers 404', async () => {
+    const res = await request(app).get('/api/admin/does-not-exist').set(asAdmin);
 
     expect(res.status).toBe(404);
     expect(res.body.error.code).toBe('NOT_FOUND');

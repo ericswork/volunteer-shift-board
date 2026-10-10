@@ -49,3 +49,10 @@ export function createShift(
 ) {
   return db.shift.create({ data });
 }
+
+export function createEvent(
+  data: { title: string; cause: Cause; date: Date; location: string; description: string },
+  db = prisma,
+) {
+  return db.event.create({ data });
+}

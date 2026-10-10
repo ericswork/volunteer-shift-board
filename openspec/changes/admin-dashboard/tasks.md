@@ -17,7 +17,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 4. Create event endpoint (server; second cut if behind)
 
-- [ ] 4.1 Add `createEventBody` (title 3–100, cause enum, date today or later, location 3–100, description 1–1000) and `POST /api/admin/events`; verify tests: a valid event → `201` with its `id` and listed with `status: null`; yesterday's date → `400` with a `date` detail "Pick today or a later date."; a bad cause → `400` with a `cause` detail
+- [x] 4.1 Add `createEventBody` (title 3–100, cause enum, date today or later, location 3–100, description 1–1000) and `POST /api/admin/events`; verify tests: a valid event → `201` with its `id` and listed with `status: null`; yesterday's date → `400` with a `date` detail "Pick today or a later date."; a bad cause → `400` with a `cause` detail
 
 ## 5. Admin page and events table (client)
 
