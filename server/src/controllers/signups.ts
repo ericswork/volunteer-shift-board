@@ -6,3 +6,8 @@ export async function signUp(req: Request<{ id: string }>, res: Response) {
   const result = await signupsService.signUp(currentUser(res).id, req.params.id);
   res.status(201).json(result);
 }
+
+export async function cancelSignup(req: Request<{ id: string }>, res: Response) {
+  await signupsService.cancelSignup(currentUser(res).id, req.params.id);
+  res.status(204).end();
+}

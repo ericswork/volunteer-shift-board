@@ -1,3 +1,4 @@
+import { prisma } from '../db/client.js';
 import type { Prisma } from '../generated/prisma/client.js';
 
 type Tx = Prisma.TransactionClient;
@@ -32,4 +33,16 @@ export function findOverlappingSignup(tx: Tx, userId: string, range: { startsAt:
 
 export function createSignup(tx: Tx, userId: string, shiftId: string) {
   return tx.signup.create({ data: { userId, shiftId } });
+}
+
+export function findOwnSignup(signupId: string, userId: string, db = prisma) {
+  return db.signup.findFirst({
+    where: { id: signupId, userId },
+    include: { shift: { select: { startsAt: true } } },
+  });
+}
+
+export async function deleteOwnSignup(signupId: string, userId: string, db = prisma) {
+  const { count } = await db.signup.deleteMany({ where: { id: signupId, userId } });
+  return count > 0;
 }

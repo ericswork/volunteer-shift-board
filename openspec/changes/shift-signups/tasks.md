@@ -13,7 +13,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 3. Cancel endpoint (server)
 
-- [ ] 3.1 Add `DELETE /api/signups/:id` (own sign-ups only, otherwise `404`; `409 CANCELLATION_CLOSED` inside 24 hours; `204` on success); verify integration tests: Demo Volunteer cancels Pack boxes three days ahead → `204` and one more spot; another user's sign-up → `404` and the row remains; 25 hours ahead → `204`; 23 hours ahead → `409` and the row remains; `not-a-real-id` → `404`
+- [x] 3.1 Add `DELETE /api/signups/:id` (own sign-ups only, otherwise `404`; `409 CANCELLATION_CLOSED` inside 24 hours; `204` on success); verify integration tests: Demo Volunteer cancels Pack boxes three days ahead → `204` and one more spot; another user's sign-up → `404` and the row remains; 25 hours ahead → `204`; 23 hours ahead → `409` and the row remains; `not-a-real-id` → `404`
 
 ## 4. Viewer state and my sign-ups (server)
 

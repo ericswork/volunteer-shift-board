@@ -5,8 +5,10 @@ import { Prisma } from '../generated/prisma/client.js';
 import * as clock from '../lib/clock.js';
 import { conflict, notFound } from '../lib/errors.js';
 import { availability } from './availability.js';
+import { canCancel } from './cancellation.js';
 
 const shiftNotFound = () => notFound("We couldn't find that shift.");
+const signupNotFound = () => notFound("We couldn't find that sign-up.");
 const alreadySignedUp = () => conflict('ALREADY_SIGNED_UP', "You're already signed up for this shift.");
 
 // Locks the user, then the shift (always in that order, so two requests never wait on each other
@@ -53,4 +55,20 @@ export async function signUp(userId: string, shiftId: string) {
     }
     throw error;
   }
+}
+
+// No lock needed: removing a sign-up can only free a spot, so it can't break any rule.
+// Someone else's sign-up answers 404 like a missing one, so sign-up ids can't be probed.
+export async function cancelSignup(userId: string, signupId: string) {
+  if (!z.uuid().safeParse(signupId).success) throw signupNotFound();
+
+  const signup = await signupsData.findOwnSignup(signupId, userId);
+  if (!signup) throw signupNotFound();
+  if (!canCancel(signup.shift.startsAt, clock.now())) {
+    throw conflict(
+      'CANCELLATION_CLOSED',
+      'Cancellations close 24 hours before the shift. Please contact the organizer.',
+    );
+  }
+  if (!(await signupsData.deleteOwnSignup(signupId, userId))) throw signupNotFound();
 }
