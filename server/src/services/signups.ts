@@ -72,3 +72,21 @@ export async function cancelSignup(userId: string, signupId: string) {
   }
   if (!(await signupsData.deleteOwnSignup(signupId, userId))) throw signupNotFound();
 }
+
+// Upcoming means the shift hasn't ended yet, so a shift in progress still counts as upcoming
+export async function listMySignups(userId: string, when: 'upcoming' | 'past') {
+  const now = clock.now();
+  const rows = await signupsData.findSignupsForUser(
+    userId,
+    when === 'upcoming'
+      ? { shiftEnds: { gt: now }, order: 'asc' }
+      : { shiftEnds: { lte: now }, order: 'desc' },
+  );
+  const signups = rows.map(({ id, shift }) => ({
+    signupId: id,
+    canCancel: canCancel(shift.startsAt, now),
+    shift: { id: shift.id, name: shift.name, startsAt: shift.startsAt, endsAt: shift.endsAt },
+    event: shift.event,
+  }));
+  return { signups, total: signups.length };
+}

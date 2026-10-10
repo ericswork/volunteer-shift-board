@@ -27,6 +27,11 @@ export const requireAdmin: RequestHandler = (_req, res, next) => {
   next();
 };
 
+// For endpoints open to everyone that show more to a signed-in user
+export function optionalUser(res: Response): User | undefined {
+  return res.locals.user as User | undefined;
+}
+
 export function currentUser(res: Response): User {
   const user = res.locals.user as User | undefined;
   if (!user) throw new Error('currentUser() needs requireAuth earlier in the route');

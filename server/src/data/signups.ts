@@ -46,3 +46,26 @@ export async function deleteOwnSignup(signupId: string, userId: string, db = pri
   const { count } = await db.signup.deleteMany({ where: { id: signupId, userId } });
   return count > 0;
 }
+
+export function findSignupsOverlapping(
+  userId: string,
+  range: { startsAt: Date; endsAt: Date },
+  db = prisma,
+) {
+  return db.signup.findMany({
+    where: { userId, shift: { startsAt: { lt: range.endsAt }, endsAt: { gt: range.startsAt } } },
+    select: { id: true, shiftId: true, shift: { select: { startsAt: true, endsAt: true } } },
+  });
+}
+
+export function findSignupsForUser(
+  userId: string,
+  { shiftEnds, order }: { shiftEnds: Prisma.DateTimeFilter; order: 'asc' | 'desc' },
+  db = prisma,
+) {
+  return db.signup.findMany({
+    where: { userId, shift: { endsAt: shiftEnds } },
+    orderBy: { shift: { startsAt: order } },
+    include: { shift: { include: { event: { select: { id: true, title: true, location: true } } } } },
+  });
+}

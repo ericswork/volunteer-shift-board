@@ -1,9 +1,12 @@
 import { z } from 'zod';
 import * as eventsData from '../data/events.js';
+import * as signupsData from '../data/signups.js';
+import * as clock from '../lib/clock.js';
 import { notFound } from '../lib/errors.js';
 import { appToday, timeframeDates } from '../lib/time.js';
 import type { ListEventsQuery } from '../schemas/events.js';
 import { availability } from './availability.js';
+import { canCancel } from './cancellation.js';
 
 type EventRow = NonNullable<Awaited<ReturnType<typeof eventsData.findEventById>>>;
 type ShiftRow = EventRow['shifts'][number];
@@ -22,11 +25,40 @@ export async function listEvents({ q, cause, when, openOnly }: ListEventsQuery) 
   return { events, total: events.length };
 }
 
-export async function getEvent(id: string) {
+export async function getEvent(id: string, viewerId?: string) {
   // A mangled link is the same as a missing event to a visitor, and Postgres would reject the non-uuid
   const row = z.uuid().safeParse(id).success ? await eventsData.findEventById(id) : null;
   if (!row) throw notFound("We couldn't find that event.");
-  return toEventDetail(row);
+
+  const event = toEventDetail(row);
+  if (!viewerId || !event.startsAt || !event.endsAt) return event;
+
+  // Every shift the viewer holds in this event's time span, including shifts at other events
+  const held = await signupsData.findSignupsOverlapping(viewerId, {
+    startsAt: event.startsAt,
+    endsAt: event.endsAt,
+  });
+  const now = clock.now();
+  return {
+    ...event,
+    shifts: event.shifts.map((shift) => ({ ...shift, viewer: viewerState(shift, held, now) })),
+  };
+}
+
+type HeldSignup = { id: string; shiftId: string; shift: { startsAt: Date; endsAt: Date } };
+
+// The first state that applies wins, so a held shift reads "signed up" even once it is full
+function viewerState(shift: ReturnType<typeof toShift>, held: HeldSignup[], now: Date) {
+  const mine = held.find((signup) => signup.shiftId === shift.id);
+  if (mine) {
+    return { state: 'signed_up', signupId: mine.id, canCancel: canCancel(shift.startsAt, now) };
+  }
+  if (shift.startsAt <= now) return { state: 'started' };
+  if (shift.spotsLeft === 0) return { state: 'full' };
+  const overlaps = held.some(
+    ({ shift: other }) => other.startsAt < shift.endsAt && other.endsAt > shift.startsAt,
+  );
+  return { state: overlaps ? 'overlap' : 'open' };
 }
 
 function toEventDetail(row: EventRow) {

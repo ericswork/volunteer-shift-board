@@ -17,8 +17,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 4. Viewer state and my sign-ups (server)
 
-- [ ] 4.1 Add the `viewer` object (`state`, plus `signupId` and `canCancel` when signed up) to each shift in `GET /api/events/:id` for signed-in requests, using the user that `authenticate` already attaches; verify tests: Food Pantry for Demo Volunteer → Sort donations `open`, Pack boxes `signed_up` with `canCancel: true`, Load delivery vans `full`; Shelter Dog Walking → Kennel helpers `overlap`; a started shift → `started`; anonymous → no `viewer` field
-- [ ] 4.2 Add `GET /api/me/signups?when=upcoming|past` (Zod, default `upcoming`, behind `requireAuth`); verify tests: upcoming → Pack boxes, Tech help desk, Morning walkers; past → Sort and fold coats, then Set up tables; `when=bogus` → `400 VALIDATION_ERROR`; anonymous → `401`
+- [x] 4.1 Add the `viewer` object (`state`, plus `signupId` and `canCancel` when signed up) to each shift in `GET /api/events/:id` for signed-in requests, using the user that `authenticate` already attaches; verify tests: Food Pantry for Demo Volunteer → Sort donations `open`, Pack boxes `signed_up` with `canCancel: true`, Load delivery vans `full`; Shelter Dog Walking → Kennel helpers `overlap`; a started shift → `started`; anonymous → no `viewer` field
+- [x] 4.2 Add `GET /api/me/signups?when=upcoming|past` (Zod, default `upcoming`, behind `requireAuth`); verify tests: upcoming → Pack boxes, Tech help desk, Morning walkers; past → Sort and fold coats, then Set up tables; `when=bogus` → `400 VALIDATION_ERROR`; anonymous → `401`
 
 ## 5. shadcn/ui setup (client)
 
