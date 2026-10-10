@@ -22,7 +22,7 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 5. shadcn/ui setup (client)
 
-- [ ] 5.1 Initialise shadcn/ui and add only `Dialog`, `Tabs` and `Sonner`, themed with the tokens.md colors; verify the typecheck and build pass, and on a scratch page (not committed) that the dialog traps focus and returns it on close, the tabs move with the arrow keys, and a toast appears
+- [x] 5.1 Initialise shadcn/ui and add only `Dialog`, `Tabs` and `Sonner`, themed with the tokens.md colors; verify the typecheck and build pass, and on a scratch page (not committed) that the dialog traps focus and returns it on close, the tabs move with the arrow keys, and a toast appears
 
 ## 6. Shift row actions (client)
 

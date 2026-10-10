@@ -1,5 +1,6 @@
 import { Outlet, ScrollRestoration } from 'react-router';
 import { ServerStatusNotice } from '../ServerStatusNotice';
+import { Toaster } from '../ui/sonner';
 import { Footer } from './Footer';
 import { Header } from './Header';
 
@@ -14,6 +15,7 @@ export function AppLayout() {
         <Outlet />
       </main>
       <Footer />
+      <Toaster />
       <ScrollRestoration />
     </div>
   );
