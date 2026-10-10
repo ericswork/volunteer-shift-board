@@ -1,0 +1,56 @@
+name: Reset demo data
+
+# Every day at 08:00 UTC (4 PM in Manila), and on demand from the Actions tab
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A manual run started during the scheduled one waits instead of seeding at the same time
+concurrency:
+  group: reset-demo
+  cancel-in-progress: false
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci
+
+      # The Prisma client is generated code (git-ignored), so it's created here before seeding
+      - name: Seed production
+        working-directory: server
+        run: npm run db:generate && npm run db:seed
+        env:
+          # A short batch job doesn't need Neon's pooler, so both URLs use the direct connection
+          DATABASE_URL: ${{ secrets.PROD_DIRECT_URL }}
+          DIRECT_URL: ${{ secrets.PROD_DIRECT_URL }}
+          # The env schema requires these, though the seed doesn't use them
+          CLIENT_ORIGIN: https://lauritzkeans-volunteer-shift-board.vercel.app
+          FIREBASE_PROJECT_ID: volunteer-shift-board
+          APP_TIMEZONE: Asia/Manila
+
+      # Kept out of package.json: Render would otherwise install it on every build for nothing
+      - name: Install firebase-admin for this job only
+        run: npm install --no-save firebase-admin@14.5.0
+
+      - name: Reset the demo passwords
+        run: node scripts/reset-demo-passwords.mjs
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DEMO_VOLUNTEER_PASSWORD: ${{ vars.DEMO_VOLUNTEER_PASSWORD }}
+          DEMO_ADMIN_PASSWORD: ${{ vars.DEMO_ADMIN_PASSWORD }}
