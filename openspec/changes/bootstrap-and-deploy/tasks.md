@@ -4,14 +4,14 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 1. Owner setup
 
-- [ ] 1.1 (owner) Create an empty GitHub repository and add it as `origin`; verify `git remote -v` shows it
+- [x] 1.1 (owner) Create an empty GitHub repository and add it as `origin`; verify `git remote -v` shows it
 - [ ] 1.2 (owner) Create a Neon project in AWS Singapore (`ap-southeast-1`) with branches `dev` and `test`; once group 2 adds `server/.env.example`, paste the `dev` strings into `server/.env` and the `test` strings into `server/.env.test`; verify neither file appears in `git status`
 
 ## 2. Repo hygiene and server skeleton
 
-- [ ] 2.1 Add `.node-version` (24); the root `.gitignore` was created during planning. Verify `git status` lists neither `.DS_Store` nor `docs/design/`
-- [ ] 2.2 Initialise `server/` (ESM, TypeScript strict, `tsx` for dev, `vitest` + `supertest`) with scripts `dev`, `build`, `start`, `test`, and add `app.ts` and `server.ts`; verify `npm run build` compiles and `npm run dev` starts
-- [ ] 2.3 Add `config/env.ts` validating `DATABASE_URL`, `DIRECT_URL`, `CLIENT_ORIGIN`, `APP_TIMEZONE` (default `Asia/Manila`) and `PORT` with Zod, plus `server/.env.example`; verify the server refuses to start with a clear message when a required variable is missing
+- [x] 2.1 Add `.nvmrc` (24), which both nvm and Render read; the root `.gitignore` was created during planning. Verify `git status` lists neither `.DS_Store` nor `docs/design/`
+- [x] 2.2 Initialise `server/` (ESM, TypeScript strict, `tsx` for dev, `vitest` + `supertest`) with scripts `dev`, `build`, `start`, `test`, and add `app.ts` and `server.ts`; verify `npm run build` compiles and `npm run dev` starts
+- [x] 2.3 Add `config/env.ts` validating `DATABASE_URL`, `DIRECT_URL`, `CLIENT_ORIGIN`, `APP_TIMEZONE` (default `Asia/Manila`) and `PORT` with Zod, plus `server/.env.example`; verify with unit tests in `tests/env.test.ts` (defaults applied, missing variable named, unknown time zone rejected) and by hand that the server refuses to start with a clear message when a required variable is missing
 
 ## 3. Errors, validation and CORS
 

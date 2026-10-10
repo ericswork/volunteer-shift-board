@@ -126,7 +126,7 @@ Design choices in the schema:
 - **Render:** a Web Service with root directory `server`.
   - Build command: `npm ci --include=dev && npx prisma generate && npx prisma migrate deploy && npm run build`.
   - Start command: `node dist/server.js`.
-  - Health check path: `/api/health`. Node 24 LTS, set via `.node-version`.
+  - Health check path: `/api/health`. Node 24 LTS, set via `.nvmrc`.
   - Migrations run during the build because Render's pre-deploy command isn't offered on free instances. Confirm this during setup.
 - **Vercel:** root directory `client`, Vite preset. `vercel.json` rewrites every path to `/index.html` so client-side routes survive a reload.
 - **Cross-origin calls:** the browser calls Render directly (`VITE_API_URL`), and the server allowlists `CLIENT_ORIGIN`. Auth will use a Bearer header, not cookies, so CORS doesn't need credentials.

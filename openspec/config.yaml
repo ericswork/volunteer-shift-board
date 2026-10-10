@@ -18,6 +18,7 @@ rules:
     - For each decision, name the alternative considered and why it was rejected
   tasks:
     - Each numbered group is one reviewable commit; keep groups small enough to review in one sitting
+    - Tests live in the codebase and ship in the same group as the code they cover; prefer an automated test as a task's verification wherever practical
     - Mark tasks only the owner can do (account sign-ups, dashboard settings, secrets) with "(owner)"
     - End every change with a task that deploys it and verifies it on the live URLs
 
@@ -26,3 +27,4 @@ operations:
     guidance:
       - Implement one numbered task group at a time, then stop, summarise what changed and why, and wait for the owner's review before committing or starting the next group
       - Keep code comments minimal; only explain non-obvious reasons, never restate what the code does
+      - Commit messages are a single title line with no body and no co-author trailers
