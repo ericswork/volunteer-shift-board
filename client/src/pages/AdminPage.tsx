@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { EventsTable } from '../components/admin/EventsTable';
+import { RosterPanel } from '../components/admin/RosterPanel';
 import { ErrorState } from '../components/ErrorState';
 import { PageContainer } from '../components/layout/PageContainer';
 import { fetchAdminEvents } from '../lib/admin';
@@ -55,6 +56,15 @@ export function AdminPage() {
           </h2>
           {table}
         </section>
+
+        {selectedEventId && (
+          <section aria-labelledby="roster-heading" className={`${CARD} p-5`}>
+            <h2 id="roster-heading" className="text-[22px] font-bold">
+              Roster
+            </h2>
+            <RosterPanel key={selectedEventId} eventId={selectedEventId} />
+          </section>
+        )}
       </div>
     </PageContainer>
   );

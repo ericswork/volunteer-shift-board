@@ -6,11 +6,15 @@ const PILLS: Record<AvailabilityStatus, { label: string; className: string }> = 
   full: { label: 'Full', className: 'bg-status-full-bg text-status-full-text' },
 };
 
-// spotsText comes from spotsLabel, which already starts with "Full" when nothing is left
-export function StatusPill({ status, spotsText }: { status: AvailabilityStatus; spotsText?: string }) {
+type Props = { status: AvailabilityStatus; spotsText?: string; label?: string };
+
+// label replaces the whole text. spotsText comes from spotsLabel, which already starts with "Full"
+// when nothing is left
+export function StatusPill({ status, spotsText, label }: Props) {
   const pill = PILLS[status];
   let text = pill.label;
-  if (spotsText) text = status === 'full' ? spotsText : `${pill.label} · ${spotsText}`;
+  if (label) text = label;
+  else if (spotsText) text = status === 'full' ? spotsText : `${pill.label} · ${spotsText}`;
 
   return (
     <span

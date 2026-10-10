@@ -22,6 +22,17 @@ export function formatTime(instant: string): string {
   return normalizeSpaces(timeFormat.format(new Date(instant)));
 }
 
+const monthDayFormat = new Intl.DateTimeFormat('en-US', {
+  timeZone: APP_TIMEZONE,
+  month: 'short',
+  day: 'numeric',
+});
+
+// "Oct 3", as in "Signed up Oct 3" on the admin roster
+export function formatMonthDay(instant: string): string {
+  return monthDayFormat.format(new Date(instant));
+}
+
 const dateBlockFormat = new Intl.DateTimeFormat('en-US', {
   timeZone: APP_TIMEZONE,
   weekday: 'short',

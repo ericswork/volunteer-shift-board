@@ -47,7 +47,7 @@ export function EventsTable({ events, selectedId, onSelect }: Props) {
                 <td className={`${CELL} whitespace-nowrap`}>
                   {event.signedUpCount} / {event.capacity}
                 </td>
-                <td className={CELL}>
+                <td className={`${CELL} whitespace-nowrap`}>
                   {event.status ? (
                     <StatusPill status={event.status} />
                   ) : (

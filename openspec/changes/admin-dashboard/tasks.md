@@ -25,8 +25,8 @@ Each numbered group is one commit. The owner reviews it before the next group st
 
 ## 6. Roster panel (client)
 
-- [ ] 6.1 Add the roster panel: shift name, date and time, a shift picker from `['event', id]`, the "<n> of <m> signed up" pill, volunteer rows (avatar, name, "Signed up Oct 3"), the dashed "<k> spots still open" placeholder, "No one has signed up yet." and "No shifts yet. Add one below."; verify in the browser that the default roster is Sort donations with six rows, a Filling-up "6 of 8 signed up" pill and "2 spots still open", and that picking Pack boxes shows Demo Volunteer
-- [ ] 6.2 Add "Remove" with the confirmation dialog ("Remove <name> from <shift>?", "Remove", "Keep"), the success toast "Removed <name> from <shift>." and the 404 toast; verify in the browser that "Keep" changes nothing, "Remove" updates the roster and the table's Signed up column, and a sign-up removed through the API first shows the 404 toast and a refreshed roster
+- [x] 6.1 Add the roster panel: shift name, date and time, a shift picker from `['event', id]`, the "<n> of <m> signed up" pill, volunteer rows (avatar, name, "Signed up Oct 3"), the dashed "<k> spots still open" placeholder, "No one has signed up yet." and "No shifts yet. Add one below."; verify in the browser that the default roster is Sort donations with six rows, a Filling-up "6 of 8 signed up" pill and "2 spots still open", and that picking Pack boxes shows Demo Volunteer
+- [x] 6.2 Add "Remove" with the confirmation dialog ("Remove <name> from <shift>?", "Remove", "Keep"), the success toast "Removed <name> from <shift>." and the 404 toast; verify in the browser that "Keep" changes nothing, "Remove" updates the roster and the table's Signed up column, and a sign-up removed through the API first shows the 404 toast and a refreshed roster
 
 ## 7. Add a shift form (client)
 

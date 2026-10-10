@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dateBlock, formatDate, formatTime, formatTimeRange, spotsLabel } from '../src/lib/format';
+import { dateBlock, formatDate, formatMonthDay, formatTime, formatTimeRange, spotsLabel } from '../src/lib/format';
 
 // Sort donations in the seed: 9:00 AM on Saturday 2026-10-17 in Manila
 const sortDonationsStart = '2026-10-17T01:00:00.000Z';
@@ -51,5 +51,11 @@ describe('dateBlock', () => {
 
   it('uses the Manila day even when UTC is still on the day before', () => {
     expect(dateBlock('2026-10-17T17:00:00.000Z')).toEqual({ weekday: 'SUN', day: '18' });
+  });
+});
+
+describe('formatMonthDay', () => {
+  it('prints the Manila month and day of a sign-up', () => {
+    expect(formatMonthDay('2026-10-02T17:30:00.000Z')).toBe('Oct 3');
   });
 });

@@ -1,4 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { apiFetch } from './api';
+import { useAuth } from './auth';
+import { useServerReady } from './server-health';
 
 export type Cause = 'food' | 'environment' | 'education' | 'community' | 'seniors' | 'animals';
 
@@ -81,4 +84,17 @@ export function fetchEvents({ q, cause, when, openOnly }: EventFilters) {
 
 export function fetchEvent(id: string) {
   return apiFetch<EventDetail>(`/api/events/${encodeURIComponent(id)}`);
+}
+
+// The answer depends on who asks (viewer state), so the user is part of the key, and the
+// request waits until the sign-in state is known instead of fetching twice
+export function useEvent(eventId: string) {
+  const authState = useAuth();
+  const serverReady = useServerReady();
+  const uid = authState.status === 'signed-in' ? authState.user.uid : null;
+  return useQuery({
+    queryKey: ['event', eventId, uid],
+    queryFn: () => fetchEvent(eventId),
+    enabled: serverReady && authState.status !== 'loading',
+  });
 }

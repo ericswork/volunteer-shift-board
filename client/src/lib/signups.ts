@@ -14,7 +14,7 @@ export function fetchMySignups(when: 'upcoming' | 'past') {
 }
 
 // Sign-ups change counts on the list, the event page and My shifts, so all three refetch
-function refreshAfterSignupChange(queryClient: QueryClient) {
+export function refreshAfterSignupChange(queryClient: QueryClient) {
   return Promise.all([
     queryClient.invalidateQueries({ queryKey: ['event'] }),
     queryClient.invalidateQueries({ queryKey: ['events'] }),
@@ -23,7 +23,7 @@ function refreshAfterSignupChange(queryClient: QueryClient) {
 }
 
 // A 409 means the page was out of date (the shift filled, the window closed): say why and refresh
-function showServerError(error: Error) {
+export function showServerError(error: Error) {
   toast.error(error instanceof ApiError ? error.message : 'Something went wrong. Please try again.');
 }
 
